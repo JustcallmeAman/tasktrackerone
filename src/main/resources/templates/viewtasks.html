@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="charset=UTF-8" />
+    <title>Tasks</title>
+</head>
+<body>
+    <div>
+        <h2 align="center">TASKS</h2>
+        <br>
+        <table>
+            <tr>
+                <th>NAME</th>
+                <th>FREQUENCY</th>
+                <th>DESCRIPTION</th>
+                <th></th>
+            </tr>
+            <th:block th:each="task : ${taskList}">
+                <tr>
+
+                        <td th:text="${task.getName()}" th:name="name"></td>
+                        <td th:text="${task.getFrequency()}" th:name="frequency"></td>
+                        <td th:text="${task.getDescription()}" th:name="description"></td>
+                        <td>
+                            <form th:align="right" th:action="@{addcompletion}" th:object="${task}" method="post">
+                                <input type="hidden" th:value="*{id}" name="id" />
+                                <input type="hidden" th:value="*{name}" name="name" />
+                                <input type="hidden" th:value="*{frequency}" name="frequency" />
+                                <input type="hidden" th:value="*{description}" name="description" />
+                              <!--  <input type="hidden" th:value="*{id}" name="taskId" /> -->
+                                <button type="submit" class="btn btn-secondary">completed</button>
+                            </form>
+                        </td>
+
+
+
+
+
+                </tr>
+                <!--  <form th:if="${!confirmed}" th:align="center" th:action="@{/player/confirm}" th:object="${event}" method="post">
+                    <input type="hidden" th:value="*{event_id}" name="event_id" />
+                    <input type="hidden" th:value="*{event_name}" name="event_name" />
+                    <input type="hidden" th:value="*{event_time}" name="event_time" />
+                    <input type="hidden" th:value="*{event_address}" name="event_address" />
+                    <input type="hidden" th:value="*{admin_id}" name="admin_id" />
+                    <input type="hidden" th:value="*{event_date}" name="event_date" />
+                    <button type="submit" class="btn btn-primary">Confirm Attendance</button>
+                </form>-->
+            </th:block>
+        </table>
+    </div>
+</body>
+</html>

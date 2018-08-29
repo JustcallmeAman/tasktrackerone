@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link href="../static/css/login.css" th:href="@{css/login.css}" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Completion form</title>
+
+</head>
+<body>
+<!-- <p th:text="${task.getName()}" th:name="name">is name</p> -->
+
+<br><br>
+
+<div class="container">
+    <div class="card card-container-lg">
+        <h2 align="center">Create Event</h2>
+        <br>
+        <form th:action="@{submitcompletion}" th:object="${completion}" method='POST'>
+
+            <div class="form-group">
+                <label for="comment">comment </label>
+                <input type="text" id="comment" class="form-control" th:field="*{comment}" />
+            </div>
+            <div class="form-group">
+                <label for="employeeid">employee id </label>
+                <input type="text" id="employeeid" class="form-control" th:field="*{employeeId}" />
+            </div>
+            <input type="hidden" th:value="${task.getId()}" name="taskId" />
+
+            <div>
+                <br>
+                <center><button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button></center>
+                <br>
+            </div>
+            <div >
+                <center>
+                    <a th:href="@{/admin/dashboard}">Cancel</a>
+                </center>
+
+            </div>
+        </form> <!-- /form -->
+
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+
+</body>
+
