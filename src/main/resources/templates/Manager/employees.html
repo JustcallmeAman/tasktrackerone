@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Employees</title>
 </head>
 <body>
-$END$
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="charset=UTF-8" />
+    <title>Employees</title>
+</head>
+<body>
+<div>
+    <h2 align="center">EMPLOYEES</h2>
+    <br>
+    <table>
+        <tr>
+            <th>NAME</th>
+        </tr>
+        <th:block th:each="employee : ${employeeList}">
+            <tr>
+
+                <td th:text="${employee.getUsername()}" th:name="username"></td>
+
+            </tr>
+        </th:block>
+    </table>
+</div>
+</body>
+</html>
 </body>
 </html>

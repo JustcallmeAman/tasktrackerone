@@ -7,8 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CompletionMapper implements RowMapper<Completion> {
-    public static final String BASE_SQL //
-            = "Select c.completion_Id, c.completion_time, c.completion_comment, c.employee_id, c.task_id From tasks c";
+    public static final String BASE_SQL = "Select c.completion_Id, c.completion_time, c.completion_comment, c.employee_id, c.task_id From completions c";
 
     @Override
     public Completion mapRow(ResultSet rs, int rowNum) throws SQLException {
