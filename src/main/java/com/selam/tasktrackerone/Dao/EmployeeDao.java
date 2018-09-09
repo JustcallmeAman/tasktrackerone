@@ -1,6 +1,5 @@
 package com.selam.tasktrackerone.Dao;
 
-
 import com.selam.tasktrackerone.Mapper.EmployeeMapper;
 import com.selam.tasktrackerone.Model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +21,7 @@ public class EmployeeDao extends JdbcDaoSupport {
     }
 
     @Autowired
-    static
-    JdbcTemplate jdbcTemplate;
+    static JdbcTemplate jdbcTemplate;
     public List<Employee> getAllEmployees(){
         String sqlGetAllEmployeeId = "SELECT employee_id FROM employees";
         String sqlgetAllEmployeesbyId = "SELECT * FROM employees WHERE employee_id = ?";
@@ -45,6 +42,16 @@ public class EmployeeDao extends JdbcDaoSupport {
         catch (Exception e){
             return null;
         }
+    }
+
+    public void editEmployee(int id, Employee updatedEmployee){
+        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_manager=? WHERE employee_id=?";
+        try{
+            getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.isManager(), id);
+        }
+        catch (Exception e){
+        }
+
     }
 
 }

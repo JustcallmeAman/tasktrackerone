@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit employee</title>
+</head>
+<body>
+<h1>edit employee</h1>
+
+<form th:action="@{submitEmployeeEdit}" th:object="${employee}" method='POST'>
+    <input type="hidden" th:value="${employee.getId()}" name="employeeId" />
+
+    <div class="form-group">
+        <label for="username">username <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span></label>
+        <input type="text" id="username" class="form-control" th:field="*{username}" />
+    </div>
+
+    <div>
+        <label for="manager">Manager?
+            <input type="checkbox" id="manager" class="form-control" th:field="*{manager}"/>
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button>
+</form>
+<!--
+<form th:action="@{deleteEmployee}" th:object="${employee}" method='POST'>
+     <button class="btn btn-lg btn-primary btn-signin" type="submit">DELETE EMPLOYEE</button>
+</form>
+-->
+
+</body>
+</html>

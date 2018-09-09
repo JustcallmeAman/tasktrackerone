@@ -18,11 +18,21 @@
     <table>
         <tr>
             <th>NAME</th>
+            <th></th>
         </tr>
         <th:block th:each="employee : ${employeeList}">
             <tr>
 
                 <td th:text="${employee.getUsername()}" th:name="username"></td>
+                <td>
+                    <form th:align="right" th:action="@{editEmployee}" th:object="${employee}" method="post">
+                        <input type="hidden" th:value="*{id}" name="id" />
+                        <input type="hidden" th:value="*{username}" name="name" />
+                        <input type="hidden" th:value="*{encryptedPassword}" name="encryptedPassword" />
+                        <input type="hidden" th:value="*{manager}" name="manager" />
+                        <button type="submit" class="btn btn-secondary">EDIT/DELETE EMPLOYEE</button>
+                    </form>
+                </td>
 
             </tr>
         </th:block>
