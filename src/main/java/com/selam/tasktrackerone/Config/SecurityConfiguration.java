@@ -1,5 +1,6 @@
 package com.selam.tasktrackerone.Config;
 
+import com.selam.tasktrackerone.Services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +14,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+
+        // Setting Service to find User in the database.
+        // And Setting PassswordEncoder
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+
     }
 
     @Override
@@ -30,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         // dashboards require login as ROLE_USER or ROLE_ADMIN.
         // If no login, it will redirect to /login page.
-        http.authorizeRequests().antMatchers("/player/**").access("hasRole('ROLE_PLAYER')");
+        http.authorizeRequests().antMatchers("/Manager/**").access("hasRole('manager')");
 
         // For ADMIN only.
         http.authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");

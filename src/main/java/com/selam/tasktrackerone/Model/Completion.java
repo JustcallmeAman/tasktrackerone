@@ -4,11 +4,11 @@ public class Completion {
     int id;
     String time;
     String comment;
-    int employeeId;
+    Long employeeId;
     int taskId;
 
 
-    public Completion(int id, String time, String comment, int employeeId, int taskId) {
+    public Completion(int id, String time, String comment, Long employeeId, int taskId) {
         this.id = id;
         this.time = time;
         this.comment = comment;
@@ -43,11 +43,11 @@ public class Completion {
         this.comment = comment;
     }
 
-    public int getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 

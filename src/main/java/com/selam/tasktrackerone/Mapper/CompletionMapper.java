@@ -14,7 +14,7 @@ public class CompletionMapper implements RowMapper<Completion> {
         int id = rs.getInt("completion_Id");
         String time = rs.getString("completion_time");
         String comment = rs.getString("completion_comment");
-        int employeeId = rs.getInt("employee_id");
+        Long employeeId = rs.getLong("employee_id");
         int taskId = rs.getInt("task_id");
         return new Completion(id, time, comment, employeeId, taskId);
     }

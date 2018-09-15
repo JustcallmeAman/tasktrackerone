@@ -30,7 +30,7 @@ public class CompletionDao extends JdbcDaoSupport {
         int id=c.getId();
         String time=c.getTime();
         String comment=c.getComment();
-        int employeeId=c.getEmployeeId();
+        Long employeeId=c.getEmployeeId();
         int taskId=c.getTaskId();
         String sqlInputCompletion ="INSERT INTO completion(completion_id, completion_time, completion_comment, employee_id, task_id) VALUE(?,?,?,?,?)";
         getJdbcTemplate().update(sqlInputCompletion, id, time, comment, employeeId, taskId);

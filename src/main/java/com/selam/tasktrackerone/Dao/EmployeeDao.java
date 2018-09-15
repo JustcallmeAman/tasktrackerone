@@ -26,10 +26,10 @@ public class EmployeeDao extends JdbcDaoSupport {
         String sqlGetAllEmployeeId = "SELECT employee_id FROM employees";
         String sqlgetAllEmployeesbyId = "SELECT * FROM employees WHERE employee_id = ?";
         try {
-            List<Integer> employeeIds= getJdbcTemplate().queryForList(sqlGetAllEmployeeId,new Object[]{}, Integer.class);
+            List<Long> employeeIds= getJdbcTemplate().queryForList(sqlGetAllEmployeeId,new Object[]{}, Long.class);
             List<Employee> employees = new ArrayList<>();
             EmployeeMapper employeeMapper = new EmployeeMapper();
-            for (int employeeId : employeeIds){
+            for (Long employeeId : employeeIds){
                 try{
                     employees.add(getJdbcTemplate().queryForObject(sqlgetAllEmployeesbyId, new Object[]{employeeId}, employeeMapper));
                 }
@@ -44,14 +44,26 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
     }
 
-    public void editEmployee(int id, Employee updatedEmployee){
-        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_manager=? WHERE employee_id=?";
+    public void editEmployee(Long id, Employee updatedEmployee){
+        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE employee_id=?";
         try{
-            getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.isManager(), id);
+            getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), id);
         }
         catch (Exception e){
         }
 
+    }
+    public Employee findEmployeeAccount (String userName) {
+        String sql = EmployeeMapper.BASE_SQL + " where e.username = ? ";
+
+        Object[] params = new Object[] { userName };
+        EmployeeMapper mapper = new EmployeeMapper();
+        try {
+            Employee employee = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return employee;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
 }

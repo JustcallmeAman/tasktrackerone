@@ -2,25 +2,25 @@ package com.selam.tasktrackerone.Model;
 
 public class Employee {
 
-    int id;
+    Long id;
     String username;
     String encryptedPassword;
-    boolean manager;
+    int role;
     public Employee(){
 
     }
-    public Employee(int id, String username, String encryptedPassword, boolean manager) {
+    public Employee(Long id, String username, String encryptedPassword, int role) {
         this.id = id;
         this.username = username;
         this.encryptedPassword = encryptedPassword;
-        this.manager = manager;
+        this.role = role;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,11 +40,11 @@ public class Employee {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public boolean isManager() {
-        return manager;
+    public int getRole() {
+        return role;
     }
 
-    public void setManager(boolean manager) {
-        this.manager = manager;
+    public void setRole(int role) {
+        this.role = role;
     }
 }
