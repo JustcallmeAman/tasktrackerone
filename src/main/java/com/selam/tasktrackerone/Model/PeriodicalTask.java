@@ -5,21 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PeriodicalTask extends Task {
-     List<LocalTime> deadlines = new ArrayList<>();
-     LocalTime nextDeadline; //from database, deadline that doesnt have a completion (?)
-     LocalTime lastDone;
+    List<LocalTime> deadlines = new ArrayList<>();
 
-    public PeriodicalTask(List<LocalTime> deadlines, LocalTime nextDeadline, LocalTime lastDone) {
+    public PeriodicalTask(int id, String name, String frequencyDescription, String description, LocalTime nextDeadline, LocalTime lastDone, List<LocalTime> deadlines) {
+        super(id, name, frequencyDescription, description, nextDeadline, lastDone);
         this.deadlines = deadlines;
-        this.nextDeadline = nextDeadline;
-        this.lastDone = lastDone;
-    }
-
-    public PeriodicalTask(int id, String name, String frequencyDescription, String description, List<LocalTime> deadlines, LocalTime nextDeadline, LocalTime lastDone) {
-        super(id, name, frequencyDescription, description);
-        this.deadlines = deadlines;
-        this.nextDeadline = nextDeadline;
-        this.lastDone = lastDone;
     }
 
     public List<LocalTime> getDeadlines() {
@@ -30,19 +20,4 @@ public class PeriodicalTask extends Task {
         this.deadlines = deadlines;
     }
 
-    public LocalTime getNextDeadline() {
-        return nextDeadline;
-    }
-
-    public void setNextDeadline(LocalTime nextDeadline) {
-        this.nextDeadline = nextDeadline;
-    }
-
-    public LocalTime getLastDone() {
-        return lastDone;
-    }
-
-    public void setLastDone(LocalTime lastDone) {
-        this.lastDone = lastDone;
-    }
 }

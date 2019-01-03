@@ -1,20 +1,22 @@
 package com.selam.tasktrackerone.Model;
 
+import java.time.LocalTime;
+
 public class Task {
     private int id;
     private String name;
     private String frequencyDescription;
     private String description;
+    private LocalTime nextDeadline;
+    private LocalTime lastDone;
 
-    public Task() {
-
-    }
-
-    public Task(int id, String name, String frequencyDescription, String description) {
+    public Task(int id, String name, String frequencyDescription, String description, LocalTime nextDeadline, LocalTime lastDone) {
         this.id = id;
         this.name = name;
         this.frequencyDescription = frequencyDescription;
         this.description = description;
+        this.nextDeadline = nextDeadline;
+        this.lastDone = lastDone;
     }
 
 
@@ -48,5 +50,21 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalTime getNextDeadline() {
+        return nextDeadline;
+    }
+
+    public void setNextDeadline(LocalTime nextDeadline) {
+        this.nextDeadline = nextDeadline;
+    }
+
+    public LocalTime getLastDone() {
+        return lastDone;
+    }
+
+    public void setLastDone(LocalTime lastDone) {
+        this.lastDone = lastDone;
     }
 }
