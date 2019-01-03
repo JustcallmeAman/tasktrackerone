@@ -27,8 +27,7 @@
                 <td>
                     <form th:align="right" th:action="@{editEmployee}" th:object="${employee}" method="post">
                         <input type="hidden" th:value="*{id}" name="id" />
-                        <input type="hidden" th:value="*{username}" name="name" />
-                        <input type="hidden" th:value="*{encryptedPassword}" name="encryptedPassword" />
+                        <input type="hidden" th:value="*{username}" name="username" />
                         <input type="hidden" th:value="*{role}" name="role" />
                         <button type="submit" class="btn btn-secondary">EDIT/DELETE EMPLOYEE</button>
                     </form>

@@ -44,7 +44,7 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
     }
 
-    public void editEmployee(Long id, Employee updatedEmployee){
+    public void EditEmployee(Long id, Employee updatedEmployee){
         String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE employee_id=?";
         try{
             getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), id);

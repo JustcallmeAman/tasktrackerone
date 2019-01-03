@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit employee</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="card card-container-lg">
+        <h1>edit employee</h1>
+        <br>
+        <form th:action="@{submitEmployeeEdit}" th:object="${employee}" method='POST'>
+
+            <div class="form-group">
+                <label for="username">username</label>
+                <input type="text" id="username" class="form-control" th:field="*{username}" />
+            </div>
+
+            <div>
+                <label for="role">Role</label>
+                <input type="text" id="role" class="form-control" th:field="*{role}" />
+            </div>
+            <input type="hidden" th:value="${employee.getId()}" name="employeeId" />
+            <button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+<!--
+<form th:action="@{deleteEmployee}" th:object="${employee}" method='POST'>
+     <button class="btn btn-lg btn-primary btn-signin" type="submit">DELETE EMPLOYEE</button>
+</form>
+-->
+
+</body>
+</html>

@@ -3,17 +3,17 @@ package com.selam.tasktrackerone.Model;
 public class Task {
     private int id;
     private String name;
-    private String frequency;
+    private String frequencyDescription;
     private String description;
 
     public Task() {
 
     }
 
-    public Task(int id, String name, String frequency, String description) {
+    public Task(int id, String name, String frequencyDescription, String description) {
         this.id = id;
         this.name = name;
-        this.frequency = frequency;
+        this.frequencyDescription = frequencyDescription;
         this.description = description;
     }
 
@@ -34,12 +34,12 @@ public class Task {
         this.name = name;
     }
 
-    public String getFrequency() {
-        return frequency;
+    public String getFrequencyDescription() {
+        return frequencyDescription;
     }
 
-    public void setFrequency(String frequency) {
-        this.frequency = frequency;
+    public void setFrequencyDescription(String frequencyDescription) {
+        this.frequencyDescription = frequencyDescription;
     }
 
     public String getDescription() {
