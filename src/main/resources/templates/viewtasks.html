@@ -11,31 +11,28 @@
         <table>
             <tr>
                 <th>NAME</th>
-                <th>FREQUENCY</th>
-                <th>DESCRIPTION</th>
+                <th>LAST DONE</th>
+                <th>NEXT DEADLINE</th>
+                <th>ADD COMPLETION</th>
                 <th></th>
             </tr>
             <th:block th:each="task : ${taskList}">
                 <tr>
-
-                        <td th:text="${task.getName()}" th:name="name"></td>
-                        <td th:text="${task.getFrequency()}" th:name="frequency"></td>
-                        <td th:text="${task.getDescription()}" th:name="description"></td>
-                        <td>
-                            <form th:align="right" th:action="@{addcompletion}" th:object="${task}" method="post">
-                                <input type="hidden" th:value="*{id}" name="id" />
-                                <input type="hidden" th:value="*{name}" name="name" />
-                                <input type="hidden" th:value="*{frequency}" name="frequency" />
-                                <input type="hidden" th:value="*{description}" name="description" />
-                                <button type="submit" class="btn btn-secondary">completed</button>
-                            </form>
-                        </td>
-
-
-
-
-
+                    <td th:text="${task.getName()}"></td>
+                    <td th:text="${task.getLastDone()}"></td>
+                    <td th:text="${task.getNextDeadline()}"></td>
+                    <td>
+                        <form th:align="right" th:action="@{addcompletion}" th:object="${task}" method="post">
+                            <input type="hidden" th:value="*{id}" name="id" />
+                            <input type="hidden" th:value="*{name}" name="name" />
+                            <input type="hidden" th:value="*{description}" name="description" />
+                            <button type="submit" class="btn btn-secondary">completed</button>
+                        </form>
+                    </td>
                 </tr>
+
+
+
                 <!--  <form th:if="${!confirmed}" th:align="center" th:action="@{/player/confirm}" th:object="${event}" method="post">
                     <input type="hidden" th:value="*{event_id}" name="event_id" />
                     <input type="hidden" th:value="*{event_name}" name="event_name" />

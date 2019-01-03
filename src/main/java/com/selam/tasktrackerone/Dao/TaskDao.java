@@ -41,23 +41,12 @@ public class TaskDao extends JdbcDaoSupport{
         getJdbcTemplate().update(sqlCreateTask, taskName, taskFrequency, taskDescription);
     }
 
-    public List<Task> getAllTasks(){
-        String sqlGetAllTaskId = "SELECT task_id FROM tasks";
-        String sqlgetAllTasksbyId = "SELECT * FROM tasks WHERE task_id = ?";
-        try {
-            List<Integer> taskIds= getJdbcTemplate().queryForList(sqlGetAllTaskId,new Object[]{}, Integer.class);
-            List<Task> tasks = new ArrayList<>();
-            TaskMapper taskMapper = new TaskMapper();
-            for (int taskid : taskIds){
-                try{
-                    tasks.add(getJdbcTemplate().queryForObject(sqlgetAllTasksbyId, new Object[]{taskid}, taskMapper));
-                }
-                catch (EmptyResultDataAccessException e){
-                }
-            }
-            return tasks;
-        }
-        catch (Exception e){
+    public List<Task> getAllTasks() {
+        String sql= "SELECT * FROM tasks";
+        try{
+            List<Task> tasks=getJdbcTemplate().query(sql, new TaskMapper());
+            return  tasks;
+        } catch (Exception e){
             return null;
         }
     }
