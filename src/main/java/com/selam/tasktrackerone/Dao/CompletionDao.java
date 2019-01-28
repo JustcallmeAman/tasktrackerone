@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -28,11 +30,11 @@ public class CompletionDao extends JdbcDaoSupport {
 
     public void InputCompletion(Completion c){
         int id=c.getId();
-        String time=c.getTime();
+        LocalTime time=c.getTime();
         String comment=c.getComment();
         Long employeeId=c.getEmployeeId();
         int taskId=c.getTaskId();
-        String sqlInputCompletion ="INSERT INTO completion(completion_id, completion_time, completion_comment, employee_id, task_id) VALUE(?,?,?,?,?)";
+        String sqlInputCompletion ="INSERT INTO completion(id, completion_time, completion_comment, employee_id, task_id) VALUE(?,?,?,?,?)";
         getJdbcTemplate().update(sqlInputCompletion, id, time, comment, employeeId, taskId);
     }
 

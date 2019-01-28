@@ -18,8 +18,7 @@ public class Task {
         this.nextDeadline = nextDeadline;
         this.lastDone = lastDone;
     }
-
-
+    
     public int getId() {
         return id;
     }
@@ -60,9 +59,7 @@ public class Task {
         this.nextDeadline = nextDeadline;
     }
 
-    public LocalTime getLastDone() {
-        return lastDone;
-    }
+    public LocalTime getLastDone() { return lastDone; }
 
     public void setLastDone(LocalTime lastDone) {
         this.lastDone = lastDone;

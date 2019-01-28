@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -18,6 +19,9 @@ public class TaskController {
     @RequestMapping(value = "viewtasks", method = RequestMethod.GET)
     public String viewtasks(Model model) {
         List<Task> taskList= taskDao.getAllTasks();
+        for(Task t : taskList){
+            t.setLastDone(taskDao.GetLastDoneTime(t));
+        }
         model.addAttribute("taskList", taskList);
         return "viewtasks";
     }

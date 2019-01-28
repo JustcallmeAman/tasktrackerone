@@ -78,6 +78,18 @@ public class TaskDao extends JdbcDaoSupport{
         String sqlGetTaskById= "SELECT * FROM tasks Where task_id= ?";
         return getJdbcTemplate().queryForObject(sqlGetTaskById, new Object[]{id}, taskMapper);
     }
+    public LocalTime GetLastDoneTime(Task t){
+        String sqlGetDoneTimes= "SELECT completion_time FROM completion WHERE task_id=?";
+        List<LocalTime> doneTimes= getJdbcTemplate().queryForList(sqlGetDoneTimes,new Object[]{t.getId()}, LocalTime.class);//get times that task t hs been completed so far
+        LocalTime lastDone=null;
+        if(!doneTimes.isEmpty()){
+            //doneTimes.sort(Comparator.naturalOrder()); //might be important if for some reason this is not a ordered list already
+            lastDone=doneTimes.get(doneTimes.size()-1);
+        }
+        return lastDone;
+
+    }
+
 
 
 }

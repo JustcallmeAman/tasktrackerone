@@ -22,13 +22,14 @@ public class TaskMapper implements RowMapper<Task> {
         String taskDescription = rs.getString("task_Description");
         int taskType = rs.getInt("task_taskType_id");
         String taskFrequencyDescription="";
-        LocalTime lt = LocalTime.of(00, 00, 00, 0000);//placeholder for localtime in deadlines and last dones.
+        LocalTime lt1 = LocalTime.of(00, 00, 00, 0000);//placeholder for localtime in deadlines and last dones.
+        LocalTime lt2 = LocalTime.of(05, 00, 00, 0000);
         List<LocalTime> deadlines = new ArrayList<>();
         if (taskType==1){//periodical
-            return new PeriodicalTask(taskId, taskName,taskFrequencyDescription, taskDescription, lt, lt, deadlines);
+            return new PeriodicalTask(taskId, taskName,taskFrequencyDescription, taskDescription, lt1, lt2, deadlines);
         }
         else{//frequent
-            return new FrequentTask(taskId, taskName,taskFrequencyDescription, taskDescription, lt, lt, 1L);
+            return new FrequentTask(taskId, taskName,taskFrequencyDescription, taskDescription, lt1, lt2 , 1L);
         }
 
     }
