@@ -18,7 +18,7 @@ public class Task {
         this.nextDeadline = nextDeadline;
         this.lastDone = lastDone;
     }
-    
+
     public int getId() {
         return id;
     }

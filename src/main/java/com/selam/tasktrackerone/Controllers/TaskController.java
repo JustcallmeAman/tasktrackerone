@@ -1,6 +1,8 @@
 package com.selam.tasktrackerone.Controllers;
 
 import com.selam.tasktrackerone.Dao.TaskDao;
+import com.selam.tasktrackerone.Model.FrequentTask;
+import com.selam.tasktrackerone.Model.PeriodicalTask;
 import com.selam.tasktrackerone.Model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.lang.reflect.Type;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -21,6 +24,15 @@ public class TaskController {
         List<Task> taskList= taskDao.getAllTasks();
         for(Task t : taskList){
             t.setLastDone(taskDao.GetLastDoneTime(t));
+            if(taskDao.getTaskType(t)==1){//periodical
+                for (LocalTime d : ((PeriodicalTask) t).getDeadlines()){
+                    //HERE: CODE TO UPDATE NEXT DEADLINE FOR PERIODICAL TASK
+
+                }
+            }
+            else if(taskDao.getTaskType(t)==2){//frequent
+                t.setNextDeadline(t.getLastDone().plusHours(((FrequentTask) t).getFrequency()));
+            }
         }
         model.addAttribute("taskList", taskList);
         return "viewtasks";

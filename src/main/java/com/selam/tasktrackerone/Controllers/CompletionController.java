@@ -27,7 +27,6 @@ public class CompletionController {
 
     @RequestMapping(value = "submitcompletion", method = RequestMethod.POST) //for submitting the completion form after its filled out.
     public String submitCompletion(@ModelAttribute(value = "completion") Completion completion) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         LocalTime time= LocalTime.now();
         //dateFormat.format(time);
         completion.setTime(time);

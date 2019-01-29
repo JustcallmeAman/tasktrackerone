@@ -87,9 +87,18 @@ public class TaskDao extends JdbcDaoSupport{
             lastDone=doneTimes.get(doneTimes.size()-1);
         }
         return lastDone;
-
     }
-
-
-
+    public int getTaskType(Task t){
+        String sqlGetTaskType= "SELECT task_taskType_id FROM tasks WHERE id=?";
+        int taskType = getJdbcTemplate().queryForObject(sqlGetTaskType,new Object[]{t.getId()}, Integer.class);
+        return taskType;
+    }
+    public LocalTime getNextPeriodicalDeadline (Task t){
+        String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE completion_id IS NULL AND task_id=?";
+        return (getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{t.getId()}, LocalTime.class)).get(0);
+    }
+    public LocalTime getNextPeriodicalDeadline (int taskid){
+        String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE completion_id IS NULL AND task_id=?";
+        return (getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{taskid}, LocalTime.class)).get(0);
+    }
 }
