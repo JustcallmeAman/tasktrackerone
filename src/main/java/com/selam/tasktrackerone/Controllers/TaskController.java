@@ -23,12 +23,9 @@ public class TaskController {
     public String viewtasks(Model model) {
         List<Task> taskList= taskDao.getAllTasks();
         for(Task t : taskList){
-            t.setLastDone(taskDao.GetLastDoneTime(t));
+            t.setLastDone(taskDao.getLastDoneTime(t));
             if(taskDao.getTaskType(t)==1){//periodical
-                for (LocalTime d : ((PeriodicalTask) t).getDeadlines()){
-                    //HERE: CODE TO UPDATE NEXT DEADLINE FOR PERIODICAL TASK
-
-                }
+                t.setNextDeadline(taskDao.getNextPeriodicalDeadline(t));
             }
             else if(taskDao.getTaskType(t)==2){//frequent
                 t.setNextDeadline(t.getLastDone().plusHours(((FrequentTask) t).getFrequency()));

@@ -1,6 +1,5 @@
 package com.selam.tasktrackerone.Dao;
 
-import com.selam.tasktrackerone.Mapper.CompletionMapper;
 import com.selam.tasktrackerone.Model.Completion;
 import com.selam.tasktrackerone.Model.PeriodicalTask;
 import com.selam.tasktrackerone.Model.Task;
@@ -33,7 +32,7 @@ public class CompletionDao extends JdbcDaoSupport {
     static
     JdbcTemplate jdbcTemplate;
 
-    public void InputCompletion(Completion c){
+    public void inputCompletion(Completion c){
         int id;
         LocalTime time=c.getTime();
         String comment=c.getComment();
@@ -48,12 +47,21 @@ public class CompletionDao extends JdbcDaoSupport {
         if (taskType == 1){//periodical
             //update deadlines table with completions
             LocalTime nextDeadline = taskDao.getNextPeriodicalDeadline(taskId);
-            if ((time.isBefore(nextDeadline) && nextDeadline.isBefore(time.plusHours(1))) || (time.equals(nextDeadline)) || time.isAfter(nextDeadline)) {
-                //if time is an hour or less before the deadline, or exactly on deadline, or past deadline,
+            if (time.equals(nextDeadline.minusHours(1)) || time.isAfter(nextDeadline.minusHours(1))){
+                //if time is greater on or after an hour or before the deadline, match completion to next deadline.
                 String sqlPutCompletionToDeadline = "UPDATE deadlines SET completion_id = ? WHERE task_id=? AND deadline_time = ?";
                 getJdbcTemplate().update(sqlPutCompletionToDeadline, id, taskId, nextDeadline);
             }
         }
+        else if (taskType==2){//frequent
+            LocalTime nextDeadline = taskDao.getNextFrequentDeadline(taskId);
+            if (time.equals(nextDeadline.minusMinutes(30)) || time.isAfter(nextDeadline.minusMinutes(30))){
+                //if time is greater on or after 3o mins or before the deadline, match completion to next deadline.
+                String sqlPutCompletionToDeadline = "UPDATE deadlines SET completion_id = ? WHERE task_id=? AND deadline_time = ?";
+                getJdbcTemplate().update(sqlPutCompletionToDeadline, id, taskId, nextDeadline);
+            }
+        }
+
     }
 
 }

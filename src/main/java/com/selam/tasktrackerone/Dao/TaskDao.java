@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.Time;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 
 @Repository
 @Transactional
@@ -51,8 +51,7 @@ public class TaskDao extends JdbcDaoSupport{
         }
     }
 
-    public Task AssignType(Task task){
-        TaskMapper taskMapper= new TaskMapper();
+    public Task assignType(Task task){
         String sqlGetTaskByType= "SELECT task_taskType_id FROM tasks Where task_taskType_id= ?";
         int taskType= getJdbcTemplate().queryForObject(sqlGetTaskByType,new Object[]{task.getId()}, Integer.class);//get int tasktype for given task
         if (taskType == 1){
@@ -73,12 +72,13 @@ public class TaskDao extends JdbcDaoSupport{
         }
     }
 
-    public Task GetTaskById(int id){
+    public Task getTaskById(int id){
         TaskMapper taskMapper= new TaskMapper();
         String sqlGetTaskById= "SELECT * FROM tasks Where task_id= ?";
         return getJdbcTemplate().queryForObject(sqlGetTaskById, new Object[]{id}, taskMapper);
     }
-    public LocalTime GetLastDoneTime(Task t){
+
+    public LocalTime getLastDoneTime(Task t){
         String sqlGetDoneTimes= "SELECT completion_time FROM completion WHERE task_id=?";
         List<LocalTime> doneTimes= getJdbcTemplate().queryForList(sqlGetDoneTimes,new Object[]{t.getId()}, LocalTime.class);//get times that task t hs been completed so far
         LocalTime lastDone=null;
@@ -88,17 +88,86 @@ public class TaskDao extends JdbcDaoSupport{
         }
         return lastDone;
     }
+
     public int getTaskType(Task t){
         String sqlGetTaskType= "SELECT task_taskType_id FROM tasks WHERE id=?";
         int taskType = getJdbcTemplate().queryForObject(sqlGetTaskType,new Object[]{t.getId()}, Integer.class);
         return taskType;
     }
+
     public LocalTime getNextPeriodicalDeadline (Task t){
         String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE completion_id IS NULL AND task_id=?";
-        return (getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{t.getId()}, LocalTime.class)).get(0);
+        List<LocalTime> deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{t.getId()}, LocalTime.class);
+        if (deadlines.size()==0){//if all deadlines are met for the day,
+            String sqlGetNextDeadlineTomorrow = "SELECT deadline_time FROM deadlines WHERE task_id=?";
+            List<LocalTime> tomorrowDeadlines= getJdbcTemplate().queryForList(sqlGetNextDeadlineTomorrow,new Object[]{t.getId()}, LocalTime.class);
+            Collections.sort(tomorrowDeadlines);
+            return (tomorrowDeadlines.get(0));
+        }
+        else {
+            Collections.sort(deadlines);
+            return (deadlines.get(0));
+        }
     }
+
     public LocalTime getNextPeriodicalDeadline (int taskid){
         String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE completion_id IS NULL AND task_id=?";
-        return (getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{taskid}, LocalTime.class)).get(0);
+        List<LocalTime> deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{taskid}, LocalTime.class);
+        if (deadlines.size()==0){//if all deadlines are met for the day,
+            String sqlGetNextDeadlineTomorrow = "SELECT deadline_time FROM deadlines WHERE task_id=?";
+            List<LocalTime> tomorrowDeadlines= getJdbcTemplate().queryForList(sqlGetNextDeadlineTomorrow,new Object[]{taskid}, LocalTime.class);
+            Collections.sort(tomorrowDeadlines);
+            return (tomorrowDeadlines.get(0));
+        }
+        else {
+            Collections.sort(deadlines);
+            return (deadlines.get(0));
+        }
+
+    }
+
+    public LocalTime getNextFrequentDeadline (Task task){
+        LocalTime nextDeadline;
+        String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE completion_id IS NULL AND task_id=?";
+        List<LocalTime> deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{task.getId()}, LocalTime.class);
+        if (deadlines.size()==0) {//if there has been set no deadlines for today yet/if all deadlines were met for today,
+            setNextFrequentDeadline(task.getId());
+        }
+        deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{task.getId()}, LocalTime.class);
+        Collections.sort(deadlines);
+        nextDeadline= deadlines.get(0);//is this necessary? should only have one deadline at a time that has not been completed
+        return nextDeadline;
+
+    }
+    public LocalTime getNextFrequentDeadline (int taskid){
+        LocalTime nextDeadline;
+        String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE completion_id IS NULL AND task_id=?";
+        List<LocalTime> deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{taskid}, LocalTime.class);
+        if (deadlines.size()==0) {//if there has been set no deadlines for today yet/if all deadlines were met for today,
+            setNextFrequentDeadline(taskid);
+        }
+        deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{taskid}, LocalTime.class);
+        Collections.sort(deadlines);
+        nextDeadline= deadlines.get(0);//is this necessary? should only have one deadline at a time that has not been completed
+        return nextDeadline;
+
+    }
+    public void setNextFrequentDeadline (int taskId){
+        String sqlGetNextDeadline = "SELECT deadline_time FROM deadlines WHERE task_id=?";
+        String sqlsetNextFrequentDeadline ="INSERT INTO deadlines(task_id, deadline_time) VALUE(?,?)";
+        List<LocalTime> deadlines= getJdbcTemplate().queryForList(sqlGetNextDeadline,new Object[]{taskId}, LocalTime.class);
+        Collections.sort(deadlines);
+        if (deadlines.size()==0){ //if there has been set no deadlines for today yet
+            getJdbcTemplate().update(sqlsetNextFrequentDeadline, taskId,LocalTime.of(6,00,00,00) );
+        }
+        else {
+            LocalTime nextDeadline = deadlines.get(deadlines.size()-1).plusHours(getFrequency(taskId));
+            getJdbcTemplate().update(sqlsetNextFrequentDeadline, taskId,nextDeadline );
+        }
+    }
+    public Long getFrequency (int taskid){
+        String sqlGetFrequencyOfTask = "SELECT taskfrequency_frequency FROM taskfrequencies WHERE task_id=?";
+        Time frequency= getJdbcTemplate().queryForObject(sqlGetFrequencyOfTask, new Object[]{taskid}, Time.class);
+        return frequency.getTime();
     }
 }

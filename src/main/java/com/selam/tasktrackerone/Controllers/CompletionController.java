@@ -30,7 +30,7 @@ public class CompletionController {
         LocalTime time= LocalTime.now();
         //dateFormat.format(time);
         completion.setTime(time);
-        completionDao.InputCompletion(completion);
+        completionDao.inputCompletion(completion);
         return "redirect:viewtasks"; //html name
     }
 

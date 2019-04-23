@@ -44,7 +44,7 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
     }
 
-    public void EditEmployee(Long id, Employee updatedEmployee){
+    public void editEmployee(Long id, Employee updatedEmployee){
         String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE employee_id=?";
         try{
             getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), id);
@@ -53,6 +53,7 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
 
     }
+
     public Employee findEmployeeAccount (String userName) {
         String sql = EmployeeMapper.BASE_SQL + " where e.username = ? ";
 

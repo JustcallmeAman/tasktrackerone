@@ -28,9 +28,10 @@ public class EmployeeController {
 
     @RequestMapping(value = "submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form
     public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee){
-        employeeDao.EditEmployee(employee.getId(), employee);
+        employeeDao.editEmployee(employee.getId(), employee);
         return "employees";
     }
+
     @RequestMapping(value = "deleteEmployee", method = RequestMethod.POST)
     public String deleteEmployee(){
         return "employees";
