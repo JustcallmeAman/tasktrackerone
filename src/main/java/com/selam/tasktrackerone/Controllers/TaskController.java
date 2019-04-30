@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -28,7 +29,9 @@ public class TaskController {
                 t.setNextDeadline(taskDao.getNextPeriodicalDeadline(t));
             }
             else if(taskDao.getTaskType(t)==2){//frequent
-                t.setNextDeadline(t.getLastDone().plusHours(((FrequentTask) t).getFrequency()));
+                Duration frequency= taskDao.getFrequency(t.getId());
+                System.out.print("FREQUENCY: "+frequency);
+                t.setNextDeadline(t.getLastDone().plus(frequency));
             }
         }
         model.addAttribute("taskList", taskList);

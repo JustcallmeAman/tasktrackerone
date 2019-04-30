@@ -22,6 +22,7 @@ public class EmployeeDao extends JdbcDaoSupport {
 
     @Autowired
     static JdbcTemplate jdbcTemplate;
+
     public List<Employee> getAllEmployees(){
         String sqlGetAllEmployeeId = "SELECT employee_id FROM employees";
         String sqlgetAllEmployeesbyId = "SELECT * FROM employees WHERE employee_id = ?";
@@ -44,7 +45,7 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
     }
 
-    public void editEmployee(Long id, Employee updatedEmployee){
+    public void EditEmployee(Long id, Employee updatedEmployee){
         String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE employee_id=?";
         try{
             getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), id);
@@ -54,7 +55,7 @@ public class EmployeeDao extends JdbcDaoSupport {
 
     }
 
-    public Employee findEmployeeAccount (String userName) {
+    public Employee FindEmployeeAccount (String userName) {
         String sql = EmployeeMapper.BASE_SQL + " where e.username = ? ";
 
         Object[] params = new Object[] { userName };
