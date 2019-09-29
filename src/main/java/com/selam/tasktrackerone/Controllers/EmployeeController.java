@@ -18,7 +18,7 @@ public class EmployeeController {
     public String viewEmployees(Model model) {
         List<Employee> employeeList= employeeDao.getAllEmployees();
         model.addAttribute("employeeList", employeeList);
-        return "employees"; //html name
+        return "editemployees"; //html name
     }
 
     @RequestMapping(value = "editEmployee", method = RequestMethod.POST) //to go from employees to edit employee form
@@ -29,12 +29,12 @@ public class EmployeeController {
     @RequestMapping(value = "submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form
     public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee){
         employeeDao.EditEmployee(employee.getId(), employee);
-        return "employees";
+        return "editemployees";
     }
 
     @RequestMapping(value = "deleteEmployee", method = RequestMethod.POST)
     public String deleteEmployee(){
-        return "employees";
+        return "editemployees";
     }
 
 }

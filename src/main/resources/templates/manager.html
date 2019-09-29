@@ -1,0 +1,26 @@
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>MANAGER</title>
+</head>
+
+<body>
+
+<div>
+	<form th:action="@{viewtasks}" method="get">
+		<button>View tasks</button>
+	</form>
+
+	<form th:action="@{edittasks}" method="get">
+		<button>Edit tasks</button>
+	</form>
+
+	<form th:action="@{editemployees}" method="get">
+		<button>Edit employees</button>
+	</form>
+
+</div>
+
+</body>
+
+</html>
