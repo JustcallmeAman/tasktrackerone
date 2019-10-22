@@ -18,6 +18,7 @@
                 <form th:align="right" th:action="@{edittask}" th:object="${task}" method="post">
                     <input type="hidden" th:value="*{id}" name="id" />
                     <input type="hidden" th:value="*{name}" name="name" />
+                    <input type="hidden" th:value="*{description}" name="description" />
                     <button type="submit" class="btn btn-secondary">edit task</button>
                 </form>
             </td>

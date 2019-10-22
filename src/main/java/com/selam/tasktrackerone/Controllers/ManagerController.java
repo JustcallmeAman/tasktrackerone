@@ -1,15 +1,20 @@
 package com.selam.tasktrackerone.Controllers;
 
 import com.selam.tasktrackerone.Dao.TaskDao;
+import com.selam.tasktrackerone.Model.Completion;
 import com.selam.tasktrackerone.Model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.time.Duration;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ManagerController {
@@ -24,13 +29,31 @@ public class ManagerController {
         public String edittasks (Model model){
             List<Task> taskList= taskDao.getAllTasks();
             model.addAttribute("taskList", taskList);
-            return "edittasks";
+            return "editTasks";
         }
         @RequestMapping(value = "deletetasks", method = RequestMethod.GET)
         public String editemployees (Model model){
-
             return "editemployees";
         }
+
+    @RequestMapping(value = "edittask", method = RequestMethod.POST) //for storing task info and going to task editing form
+    public String edittask(Model model, @ModelAttribute(value="task") Task task) {
+
+        //Task newTask= new Task();
+        //Map<String, Object> map = new HashMap<String, Object>();
+        //map.put("newTask", newTask);
+        //map.put("task", task);
+        //model.addAllAttributes(map);
+        model.addAttribute("task", task);
+        return "editTask"; //html name
+    }
+
+    @RequestMapping(value = "submittaskedit", method = RequestMethod.POST) //for submitting the task edits.
+    public String submitTaskEdit(@ModelAttribute(value = "newTask") Task task) {
+        taskDao.editTask(task);
+        return "editTasks"; //html name
+    }
+
 
     }
 

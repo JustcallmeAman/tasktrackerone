@@ -7,8 +7,8 @@ import java.util.List;
 public class PeriodicalTask extends Task {
     List<LocalTime> deadlines = new ArrayList<>();
 
-    public PeriodicalTask(int id, String name, String frequencyDescription, String description, LocalTime nextDeadline, LocalTime lastDone, List<LocalTime> deadlines) {
-        super(id, name, frequencyDescription, description, nextDeadline, lastDone);
+    public PeriodicalTask(int id, String name, String description, LocalTime nextDeadline, LocalTime lastDone, List<LocalTime> deadlines) {
+        super(id, name, description, 1, nextDeadline, lastDone);
         this.deadlines = deadlines;
     }
 

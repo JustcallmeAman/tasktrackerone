@@ -25,14 +25,14 @@ public class EmployeeDao extends JdbcDaoSupport {
 
     public List<Employee> getAllEmployees(){
         String sqlGetAllEmployeeId = "SELECT employee_id FROM employees";
-        String sqlgetAllEmployeesbyId = "SELECT * FROM employees WHERE employee_id = ?";
+        String sqlGetAllEmployeesById = "SELECT * FROM employees WHERE employee_id = ?";
         try {
             List<Long> employeeIds= getJdbcTemplate().queryForList(sqlGetAllEmployeeId,new Object[]{}, Long.class);
             List<Employee> employees = new ArrayList<>();
             EmployeeMapper employeeMapper = new EmployeeMapper();
             for (Long employeeId : employeeIds){
                 try{
-                    employees.add(getJdbcTemplate().queryForObject(sqlgetAllEmployeesbyId, new Object[]{employeeId}, employeeMapper));
+                    employees.add(getJdbcTemplate().queryForObject(sqlGetAllEmployeesById, new Object[]{employeeId}, employeeMapper));
                 }
                 catch (EmptyResultDataAccessException e){
 

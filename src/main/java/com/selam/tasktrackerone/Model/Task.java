@@ -5,15 +5,17 @@ import java.time.LocalTime;
 public class Task {
     private int id;
     private String name;
-    private String frequencyDescription;
     private String description;
+    private int type;
     private LocalTime nextDeadline;
     private LocalTime lastDone;
 
-    public Task(int id, String name, String frequencyDescription, String description, LocalTime nextDeadline, LocalTime lastDone) {
+    public Task(){
+    }
+    public Task(int id, String name, String description, int type, LocalTime nextDeadline, LocalTime lastDone) {
         this.id = id;
         this.name = name;
-        this.frequencyDescription = frequencyDescription;
+        this.type= type;
         this.description = description;
         this.nextDeadline = nextDeadline;
         this.lastDone = lastDone;
@@ -35,20 +37,20 @@ public class Task {
         this.name = name;
     }
 
-    public String getFrequencyDescription() {
-        return frequencyDescription;
-    }
-
-    public void setFrequencyDescription(String frequencyDescription) {
-        this.frequencyDescription = frequencyDescription;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public LocalTime getNextDeadline() {

@@ -29,18 +29,18 @@ public class TaskDao extends JdbcDaoSupport{
 
     public void createTask(Task form){
 
-        String sqlCreateTask ="INSERT INTO tasks (task_name, task_frequency, task_description) VALUE(?,?,?)";
+        String sqlCreateTask ="INSERT INTO tasks (task_name, task_description, task_taskType_id) VALUE(?,?,?)";
         String taskName = form.getName();
-        String taskFrequency = form.getFrequencyDescription();
+        int type = form.getType();
         String taskDescription = form.getDescription();
 
-        getJdbcTemplate().update(sqlCreateTask, taskName, taskFrequency, taskDescription);
+        getJdbcTemplate().update(sqlCreateTask, taskName, taskDescription, type);
     }
 
     public Task assignType(Task task){
         String sqlGetTaskByType= "SELECT task_taskType_id FROM tasks Where task_taskType_id= ?";
         int taskType= getJdbcTemplate().queryForObject(sqlGetTaskByType,new Object[]{task.getId()}, Integer.class);//get int tasktype for given task
-        if (taskType == 1){
+        if (taskType == 2){
             //set frequency, return frequenttask
             FrequentTask frequentTask = (FrequentTask) task;
             String sqlGetTaskFrequency= "SELECT taskfrequency_frequency FROM taskfrequencies Where task_id= ?";
@@ -48,7 +48,7 @@ public class TaskDao extends JdbcDaoSupport{
             frequentTask.setFrequency(frequency);
             return frequentTask;
         }
-        else {
+        else if (taskType==1){
             //set deadlines, return periodicaltask
             PeriodicalTask periodicalTask = (PeriodicalTask) task;
             String sqlGetTaskDeadlines= "SELECT taskperiod_period FROM taskperiods Where task_id= ?";
@@ -56,6 +56,7 @@ public class TaskDao extends JdbcDaoSupport{
             periodicalTask.setDeadlines(deadlines);
             return periodicalTask;
         }
+        return null;
     }
 
     public Task getTaskById(int id){
@@ -150,6 +151,15 @@ public class TaskDao extends JdbcDaoSupport{
             lastDone=doneTimes.get(doneTimes.size()-1);
         }
         return lastDone;
+    }
+    public void editTask(Task task){
+        //String sqlEditTask= "UPDATE tasks SET task_name=?, task_description =? WHERE id=?";
+        //getJdbcTemplate().update(sqlEditTask, task.getName(), task.getDescription(), task.getId());
+        String sqlEditTask= "UPDATE tasks SET task_name=? WHERE id=?";
+        System.out.print("taskName= "+task.getName());
+        System.out.print("taskID= "+task.getId());
+        getJdbcTemplate().update(sqlEditTask, task.getName(),task.getId());
+
     }
 
 }

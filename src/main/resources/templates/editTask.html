@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Task</title>
+    <form th:action="@{submittaskedit}" th:object="${newTask}" method='POST'>
+        <div class="form-group">
+            <label for="taskName">Task Name </label>
+            <input type="text" id="taskName" th:value="${task.getName()}" name="name"/>
+        </div>
+        <div class="form-group">
+            <label for="taskDescription">Task Description </label>
+            <input type="text" id="taskDescription" th:value="${task.getDescription()}" name="description"/>
+        </div>
+        <input type="hidden" th:value="${task.getId()}" name="id" />
+        <div>
+            <br>
+            <button type="submit">Submit</button>
+            <br>
+        </div>
+
+        <div>
+                <a th:href="@{edittasks}">Cancel</a>
+
+        </div>
+    </form>
+</head>
+<body>
+
+</body>
+</html>
