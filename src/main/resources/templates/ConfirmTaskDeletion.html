@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Task Deletion</title>
+</head>
+<body>
+<h1> Are you sure you want to delete this task?</h1>
+<h1 th:text="${task.getName()}"></h1>
+<form th:action="@{deletetask}" method='POST'>
+    <input type="hidden" th:value="${task.getId()}" name="id" />
+    <button>Delete</button>
+</form>
+<a th:href="@{edittasks}">Cancel</a>
+</body>
+</html>

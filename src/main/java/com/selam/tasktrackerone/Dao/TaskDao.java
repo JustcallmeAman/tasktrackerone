@@ -153,13 +153,13 @@ public class TaskDao extends JdbcDaoSupport{
         return lastDone;
     }
     public void editTask(Task task){
-        //String sqlEditTask= "UPDATE tasks SET task_name=?, task_description =? WHERE id=?";
-        //getJdbcTemplate().update(sqlEditTask, task.getName(), task.getDescription(), task.getId());
         String sqlEditTask= "UPDATE tasks SET task_name=? WHERE id=?";
-        System.out.print("taskName= "+task.getName());
-        System.out.print("taskID= "+task.getId());
         getJdbcTemplate().update(sqlEditTask, task.getName(),task.getId());
 
+    }
+    public void deleteTask(Task task){
+        String sqlDeleteTask= "DELETE FROM tasks WHERE id=?";
+        getJdbcTemplate().update(sqlDeleteTask, task.getId());
     }
 
 }

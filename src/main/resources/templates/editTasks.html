@@ -23,7 +23,7 @@
                 </form>
             </td>
             <td>
-                <form th:align="right" th:action="@{deletetask}" th:object="${task}" method="post">
+                <form th:align="right" th:action="@{confirmTaskDeletion}" th:object="${task}" method="post">
                     <input type="hidden" th:value="*{id}" name="id" />
                     <input type="hidden" th:value="*{name}" name="name" />
                     <button type="submit" class="btn btn-secondary">delete task</button>

@@ -38,12 +38,6 @@ public class ManagerController {
 
     @RequestMapping(value = "edittask", method = RequestMethod.POST) //for storing task info and going to task editing form
     public String edittask(Model model, @ModelAttribute(value="task") Task task) {
-
-        //Task newTask= new Task();
-        //Map<String, Object> map = new HashMap<String, Object>();
-        //map.put("newTask", newTask);
-        //map.put("task", task);
-        //model.addAllAttributes(map);
         model.addAttribute("task", task);
         return "editTask"; //html name
     }
@@ -53,7 +47,17 @@ public class ManagerController {
         taskDao.editTask(task);
         return "editTasks"; //html name
     }
+    @RequestMapping(value = "confirmTaskDeletion", method = RequestMethod.POST) //for sending to deletion Confirmation
+    public String confirmDelete(Model model, @ModelAttribute(value = "task") Task task) {
+        model.addAttribute("task", task);
+        return "ConfirmTaskDeletion"; //html name
+    }
 
+    @RequestMapping(value = "deletetask", method = RequestMethod.POST) //for sending to deletion Confirmation
+    public String deleteTask(Model model, @ModelAttribute(value = "newTask") Task task) {
+        taskDao.deleteTask(task);
+        return "editTasks"; //html name
+    }
 
     }
 
