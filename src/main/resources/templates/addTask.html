@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD A NEW TASK</title>
+</head>
+<body>
+    <h1>ADD A NEW TASK</h1>
+    <form th:action="@{addnewtask}" th:object="${task}" method='POST'>
+        <div class="form-group">
+            <label for="name">Task name </label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" />
+        </div>
+
+        <div class="form-group">
+            <label for="description">Task description </label>
+            <input type="text" id="description" class="form-control" th:field="*{description}" />
+        </div>
+        <div class="form-group">
+            <label>Task type </label>
+            <input type="radio" class="form-control" th:value="1" th:field="*{type}" /><p>periodical</p>
+            <input type="radio" class="form-control" th:value="2" th:field="*{type}" /><p>frequent</p>
+
+        </div>
+        <div>
+            <br>
+            <center><button class="btn btn-lg btn-primary btn-signin" type="submit">next</button></center>
+            <br>
+        </div>
+        <div >
+            <center>
+                <a th:href="@{/admin/dashboard}">Cancel</a>
+            </center>
+
+        </div>
+    </form>
+</body>
+</html>

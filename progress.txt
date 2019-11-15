@@ -1,0 +1,18 @@
+frequency:
+
+every _ hours/days/weeks/months/years
+
+deadlines:
+set multiple deadlines. like:
+everyday at 3pm, and every monday at 6pm (so this will be done every day at 3pm, and also on mondays both at 3pm and at 6pm)
+
+
+
+in the process of adding deadlines and frequencies.
+oth have htmls started. deadlines has a controller method and a taskDao method started.
+
+
+working on frequency rn: refering to the task frequency by doing *{frequency} doesnt work. 
+
+
+difference bn periodical and frequent: frequents next deadline depends on when it was last done. periodical is stiff.

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="${task.getName()}"></p>
+    <form th:action="@{addtaskfrequency}" th:object="${frequentTask}" method='POST'>
+        <div class="form-group">
+            <select th:field="*{frequency}">
+                <option th:each="i : ${#numbers.sequence(0, 24)}" th:value="${i}" th:text="${i}">
+                </option>
+            </select>
+        </div>
+        <div>
+            <br>
+            <center><button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button></center>
+            <br>
+        </div>
+        <div>
+            <a th:href="@{viewtasks}">Cancel</a>
+        </div>
+    </form>
+</body>
+</html>

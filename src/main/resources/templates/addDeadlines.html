@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="add deadalines for ${task.getName()}"></p>
+    <form th:action="@{addtaskdeadlines}" th:object="${periodicalTask}" method='POST'>
+        <div class="form-group">
+            <label for="name">Deadlines: once every </label>
+            <input type="text" id="name" class="form-control" th:field="*{name}" />
+        </div>
+        <div>
+            <br>
+            <center><button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button></center>
+            <br>
+        </div>
+        <div >
+            <center>
+                <a th:href="@{/admin/dashboard}">Cancel</a>
+            </center>
+
+        </div>
+    </form>
+</body>
+</html>

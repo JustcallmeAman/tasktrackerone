@@ -161,5 +161,19 @@ public class TaskDao extends JdbcDaoSupport{
         String sqlDeleteTask= "DELETE FROM tasks WHERE id=?";
         getJdbcTemplate().update(sqlDeleteTask, task.getId());
     }
+    public void addTask (Task task){
+        String sqlAddTask = "INSERT INTO tasks (task_name, task_description, task_taskType_id) VALUES (?, ?, ?)";
+        getJdbcTemplate().update(sqlAddTask, task.getName(), task.getDescription(), task.getType());
+    }
+    public void addDeadlines(PeriodicalTask periodicalTask){
+        String sqlAddDeadlines = "INSERT INTO deadlines (task_id, deadline_time) VALUES(?,?)";
+        for (LocalTime deadline : periodicalTask.getDeadlines()){
+            getJdbcTemplate().update(sqlAddDeadlines, periodicalTask.getId(), deadline);
+        }
+    }
+    public void addFrequency(FrequentTask frequentTask){
+        String sqlAddFrequency = "INSERT INTO taskfrequencies (task_id, taskfrequency_frequency) VALUES(?,?)";
+        getJdbcTemplate().update(sqlAddFrequency, frequentTask.getId(), frequentTask.getFrequency());
+    }
 
 }
