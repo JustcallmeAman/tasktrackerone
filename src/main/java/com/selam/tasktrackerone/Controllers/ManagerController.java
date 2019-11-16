@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class ManagerController {
     @RequestMapping(value = "submittaskedit", method = RequestMethod.POST) //for submitting the task edits.
     public String submitTaskEdit(@ModelAttribute(value = "newTask") Task task) {
         taskDao.editTask(task);
-        return "editTasks"; //html name
+        return "redirect:edittasks";
     }
     @RequestMapping(value = "confirmTaskDeletion", method = RequestMethod.POST) //for sending to deletion Confirmation
     public String confirmDelete(Model model, @ModelAttribute(value = "task") Task task) {
@@ -58,7 +59,7 @@ public class ManagerController {
     @RequestMapping(value = "deletetask", method = RequestMethod.POST) //for sending to deletion Confirmation
     public String deleteTask(@ModelAttribute(value = "newTask") Task task) {
         taskDao.deleteTask(task);
-        return "editTasks"; //html name
+        return "redirect:edittasks"; //html name
     }
 
     @RequestMapping(value="addtask", method=RequestMethod.GET)
