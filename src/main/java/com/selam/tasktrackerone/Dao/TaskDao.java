@@ -27,16 +27,6 @@ public class TaskDao extends JdbcDaoSupport{
     static
     JdbcTemplate jdbcTemplate;
 
-    public void createTask(Task form){
-
-        String sqlCreateTask ="INSERT INTO tasks (task_name, task_description, task_taskType_id) VALUE(?,?,?)";
-        String taskName = form.getName();
-        int type = form.getType();
-        String taskDescription = form.getDescription();
-
-        getJdbcTemplate().update(sqlCreateTask, taskName, taskDescription, type);
-    }
-
     public Task assignType(Task task){
         String sqlGetTaskByType= "SELECT task_taskType_id FROM tasks Where task_taskType_id= ?";
         int taskType= getJdbcTemplate().queryForObject(sqlGetTaskByType,new Object[]{task.getId()}, Integer.class);//get int tasktype for given task

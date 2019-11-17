@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ADD A NEW EMPLOYEE</title>
+</head>
+<body>
+<h1>ADD A NEW EMPLOYEE</h1>
+<form th:action="@{addnewemployee}" th:object="${employee}" method='POST'>
+    <div class="form-group">
+        <label for="username">Employee name </label>
+        <input type="text" id="username" class="form-control" th:field="*{username}" />
+    </div>
+
+    <div class="form-group">
+        <label for="role">role </label>
+        <input type="text" id="role" class="form-control" th:field="*{role}" />
+    </div>
+    <div class="form-group">
+        <label for="pwd">password </label>
+        <input type="password" id="pwd" class="form-control" th:field="*{encryptedPassword}" />
+    </div>
+    <div>
+        <br>
+        <center><button class="btn btn-lg btn-primary btn-signin" type="submit">submit</button></center>
+        <br>
+    </div>
+    <div >
+        <center>
+            <a th:href="@{/admin/dashboard}">Cancel</a>
+        </center>
+
+    </div>
+</form>
+</body>
+</html>

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.jasypt.encryption.pbe.config.PBEConfig;
 
 import java.util.List;
 @Controller
@@ -39,7 +40,18 @@ public class EmployeeController {
         return "redirect:employees";
     }
 
+    @RequestMapping(value = "addemployee", method = RequestMethod.GET)
+    public String addEmployee(Model model){
+        Employee employee = new Employee();
+        model.addAttribute("employee", employee);
+        return "addEmployee";
+    }
 
+    @RequestMapping(value = "addnewemployee", method = RequestMethod.POST)
+    public String addNewEmployee(@ModelAttribute(value= "employee") Employee employee){
+        employeeDao.addEmployee(employee);
+        return "redirect: Employees";
+    }
 
 }
 
