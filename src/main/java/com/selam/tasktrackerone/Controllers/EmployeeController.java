@@ -18,24 +18,28 @@ public class EmployeeController {
     public String viewEmployees(Model model) {
         List<Employee> employeeList= employeeDao.getAllEmployees();
         model.addAttribute("employeeList", employeeList);
-        return "editemployees"; //html name
+        return "employees"; //html name
     }
 
-    @RequestMapping(value = "editEmployee", method = RequestMethod.POST) //to go from employees to edit employee form
-    public String editEmployee (@ModelAttribute(value="employee") Employee employee){
-        return "editEmployee";
+    @RequestMapping(value = "editemployee", method = RequestMethod.POST) //to go from employees to edit employee form
+    public String editEmployee(Model model, @ModelAttribute(value="employee") Employee employee) {
+        model.addAttribute("employee", employee);
+        return "editEmployee"; //html name
     }
 
     @RequestMapping(value = "submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form
     public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee){
         employeeDao.EditEmployee(employee.getId(), employee);
-        return "editemployees";
+        return "redirect:employees";
     }
 
-    @RequestMapping(value = "deleteEmployee", method = RequestMethod.POST)
-    public String deleteEmployee(){
-        return "editemployees";
+    @RequestMapping(value = "confirmEmployeeDeletion", method = RequestMethod.POST)
+    public String deleteEmployee(@ModelAttribute(value= "employee") Employee employee){
+        employeeDao.deleteEmployee(employee.getId());
+        return "redirect:employees";
     }
+
+
 
 }
 

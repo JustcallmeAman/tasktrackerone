@@ -1,7 +1,6 @@
 package com.selam.tasktrackerone.Controllers;
 
 import com.selam.tasktrackerone.Dao.TaskDao;
-import com.selam.tasktrackerone.Model.Completion;
 import com.selam.tasktrackerone.Model.FrequentTask;
 import com.selam.tasktrackerone.Model.PeriodicalTask;
 import com.selam.tasktrackerone.Model.Task;
@@ -11,13 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.view.RedirectView;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ManagerController {
@@ -36,7 +30,7 @@ public class ManagerController {
         }
         @RequestMapping(value = "deletetasks", method = RequestMethod.GET)
         public String editemployees (Model model){
-            return "editemployees";
+            return "employees";
         }
 
     @RequestMapping(value = "edittask", method = RequestMethod.POST) //for storing task info and going to task editing form

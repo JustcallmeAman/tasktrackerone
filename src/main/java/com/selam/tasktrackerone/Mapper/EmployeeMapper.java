@@ -9,11 +9,11 @@ import java.sql.SQLException;
 
 public class EmployeeMapper implements RowMapper<Employee> {
 
-    public static final String BASE_SQL = "Select e.employee_Id, e.employee_username, e.employee_password, e.employee_role From employees e";
+    public static final String BASE_SQL = "Select e.Id, e.employee_username, e.employee_password, e.employee_role From employees e";
 
     @Override
     public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Long id = rs.getLong("employee_Id");
+        Long id = rs.getLong("Id");
         String username = rs.getString("employee_username");
         String password = rs.getString("employee_password");
         int role = rs.getInt("employee_role");

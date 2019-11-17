@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="charset=UTF-8" />
+    <title>Employees</title>
+</head>
+<body>
+<div>
+    <h2 align="center">EMPLOYEES</h2>
+    <br>
+    <table>
+        <a th:href="@{addemployee}">Add a new employee</a>
+        <tr>
+            <th>EMPLOYEE ID</th>
+            <th>EMPLOYEE NAME</th>
+            <th>EDIT EMPLOYEE</th>
+           <!-- <th>DELETE EMPLOYEE</th> -->
+        </tr>
+        <th:block th:each="employee : ${employeeList}">
+            <tr>
+                <td th:text="${employee.getId()}"></td>
+                <td th:text="${employee.getUsername()}"></td>
+                <td>
+                    <form th:align="right" th:action="@{editemployee}" th:object="${employee}" method="post">
+                        <input type="hidden" th:value="*{id}" name="id" />
+                        <input type="hidden" th:value="*{username}" name="username" />
+                        <input type="hidden" th:value="*{role}" name="role" />
+                        <button type="submit" class="btn btn-secondary">edit employee</button>
+                    </form>
+                </td>
+               <!-- <td>
+                    <form th:align="right" th:action="@{confirmEmployeeDeletion}" th:object="${employee}" method="post">
+                        <input type="hidden" th:value="*{id}" name="id" />
+                        <input type="hidden" th:value="*{username}" name="name" />
+                        <button type="submit" class="btn btn-secondary">delete employee</button>
+                    </form>
+                </td> -->
+            </tr>
+        </th:block>
+    </table>
+</div>
+</body>
+</html>
+</body>
+</html>

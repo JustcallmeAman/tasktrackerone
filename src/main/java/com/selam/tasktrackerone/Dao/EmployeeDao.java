@@ -24,8 +24,8 @@ public class EmployeeDao extends JdbcDaoSupport {
     static JdbcTemplate jdbcTemplate;
 
     public List<Employee> getAllEmployees(){
-        String sqlGetAllEmployeeId = "SELECT employee_id FROM employees";
-        String sqlGetAllEmployeesById = "SELECT * FROM employees WHERE employee_id = ?";
+        String sqlGetAllEmployeeId = "SELECT id FROM employees";
+        String sqlGetAllEmployeesById = "SELECT * FROM employees WHERE id = ?";
         try {
             List<Long> employeeIds= getJdbcTemplate().queryForList(sqlGetAllEmployeeId,new Object[]{}, Long.class);
             List<Employee> employees = new ArrayList<>();
@@ -46,11 +46,12 @@ public class EmployeeDao extends JdbcDaoSupport {
     }
 
     public void EditEmployee(Long id, Employee updatedEmployee){
-        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE employee_id=?";
+        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE id=?";
         try{
             getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), id);
         }
         catch (Exception e){
+            System.out.print("id idnt work");
         }
 
     }
@@ -68,4 +69,8 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
     }
 
+    public void deleteEmployee(Long id) {
+        String sqlDeleteEmployee= "DELETE FROM employees WHERE id=?";
+        getJdbcTemplate().update(sqlDeleteEmployee, id);
+    }
 }
