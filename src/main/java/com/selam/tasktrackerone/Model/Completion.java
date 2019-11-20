@@ -1,21 +1,23 @@
 package com.selam.tasktrackerone.Model;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Completion {
     int id;
-    LocalTime time;
+    LocalDateTime time;
     String comment;
     Long employeeId;
     int taskId;
+    LocalDateTime taskDeadline;
 
-
-    public Completion(int id, LocalTime time, String comment, Long employeeId, int taskId) {
+    public Completion(int id, LocalDateTime time, String comment, Long employeeId, int taskId, LocalDateTime taskDeadline) {
         this.id = id;
         this.time = time;
         this.comment = comment;
         this.employeeId = employeeId;
         this.taskId = taskId;
+        this.taskDeadline=taskDeadline;
     }
 
     public Completion() {
@@ -29,11 +31,11 @@ public class Completion {
         this.id = id;
     }
 
-    public LocalTime getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
@@ -59,5 +61,13 @@ public class Completion {
 
     public void setTaskId(int taskId) {
         this.taskId = taskId;
+    }
+
+    public LocalDateTime getTaskDeadline() {
+        return taskDeadline;
+    }
+
+    public void setTaskDeadline(LocalDateTime taskDeadline) {
+        this.taskDeadline = taskDeadline;
     }
 }

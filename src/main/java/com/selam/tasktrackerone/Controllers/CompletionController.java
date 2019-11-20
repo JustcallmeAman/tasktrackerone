@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 @Controller
@@ -27,7 +28,7 @@ public class CompletionController {
 
     @RequestMapping(value = "submitcompletion", method = RequestMethod.POST) //for submitting the completion form after its filled out.
     public String submitCompletion(@ModelAttribute(value = "completion") Completion completion) {
-        LocalTime time= LocalTime.now();
+        LocalDateTime time= LocalDateTime.now();
         //dateFormat.format(time);
         completion.setTime(time);
         completionDao.inputCompletion(completion);

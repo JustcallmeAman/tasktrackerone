@@ -1,24 +1,26 @@
 package com.selam.tasktrackerone.Model;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Task {
     private int id;
     private String name;
     private String description;
     private int type;
-    private LocalTime nextDeadline;
-    private LocalTime lastDone;
+    private LocalDateTime nextDeadline;
+    private LocalDateTime lastDone;
+    private int sequence;
 
     public Task(){
     }
-    public Task(int id, String name, String description, int type, LocalTime nextDeadline, LocalTime lastDone) {
+    public Task(int id, String name, String description, int type, LocalDateTime nextDeadline, LocalDateTime lastDone, int sequence) {
         this.id = id;
         this.name = name;
         this.type= type;
         this.description = description;
         this.nextDeadline = nextDeadline;
         this.lastDone = lastDone;
+        this.sequence=sequence;
     }
 
     public int getId() {
@@ -53,17 +55,26 @@ public class Task {
         this.type = type;
     }
 
-    public LocalTime getNextDeadline() {
+    public LocalDateTime getNextDeadline() {
         return nextDeadline;
     }
 
-    public void setNextDeadline(LocalTime nextDeadline) {
+    public void setNextDeadline(LocalDateTime nextDeadline) {
         this.nextDeadline = nextDeadline;
     }
 
-    public LocalTime getLastDone() { return lastDone; }
+    public LocalDateTime getLastDone() { return lastDone; }
 
-    public void setLastDone(LocalTime lastDone) {
+    public void setLastDone(LocalDateTime lastDone) {
         this.lastDone = lastDone;
     }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
+
 }
