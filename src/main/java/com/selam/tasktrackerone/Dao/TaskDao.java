@@ -55,23 +55,31 @@ public class TaskDao extends JdbcDaoSupport{
     }
 
     public LocalDateTime getNextDeadline (Task task){
-        String sqlGetTimes;
-        if (task.getType()==1){//periodical
-            sqlGetTimes= "SELECT task_deadline FROM completion WHERE task_id=?";
-        } else {
-            sqlGetTimes= "SELECT completion_time FROM completion WHERE task_id=?";
+        LocalDateTime time;
+        if (task.getType()==1){//periodical-next deadline depends on past deadline
+            List<LocalDateTime> times = getPastDeadlines(task.getId());
+            if(times.size()>0){
+                time=times.get(times.size()-1);
+                if (task.getLastDone().isBefore(time.plusHours(1))){//if task was last done at least 1 hr before next deadline, keep this deadline as not completed.
+                    return time;
+                }
+            } else {
+                time = LocalDateTime.now();
+            }
+        } else {//frequent- next deadline depends on last done
+            time = getLastDone(task.getId());
         }
-        List<LocalDateTime> times= getJdbcTemplate().queryForList(sqlGetTimes,new Object[]{task.getId()}, LocalDateTime.class);
-        if (times.size()>0) {
-            LocalDateTime lastTime = times.get(times.size() - 1);
-            return lastTime.plusHours(task.getSequence());
-        } else {
-            return (LocalDateTime.now());
-        }
+        return time.plusHours(task.getSequence());
     }
 
     public LocalDateTime getNextDeadline (int taskId){
         return getNextDeadline(getTaskById(taskId));
+    }
+
+    public List<LocalDateTime> getPastDeadlines(int taskId){
+        String sqlGetTimes= "SELECT task_deadline FROM completion WHERE task_id=?";
+        return getJdbcTemplate().queryForList(sqlGetTimes,new Object[]{taskId}, LocalDateTime.class);
+
     }
 
     public LocalDateTime getLastDone(Task task){
@@ -83,7 +91,7 @@ public class TaskDao extends JdbcDaoSupport{
         List<LocalDateTime> lastDoneTimes= getJdbcTemplate().queryForList(sqlGetLastDone,new Object[]{taskId}, LocalDateTime.class);
         if (lastDoneTimes.size()>0){//set last done time
             return lastDoneTimes.get(lastDoneTimes.size()-1);
-        } else { return null;}
+        } else { return LocalDateTime.now();}
     }
 
     public void editTask(Task task){
