@@ -1,12 +1,15 @@
 package com.selam.tasktrackerone.Dao;
 
+import com.selam.tasktrackerone.Mapper.CompletionMapper;
 import com.selam.tasktrackerone.Mapper.TaskMapper;
+import com.selam.tasktrackerone.Model.Completion;
 import com.selam.tasktrackerone.Model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,7 +21,6 @@ public class TaskDao extends JdbcDaoSupport{
     public TaskDao(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
-    private static List<String> taskList;
 
     @Autowired
     static
@@ -69,7 +71,14 @@ public class TaskDao extends JdbcDaoSupport{
         } else {//frequent- next deadline depends on last done
             time = getLastDone(task.getId());
         }
-        return time.plusHours(task.getSequence());
+        if (time==null) {
+            time=LocalDateTime.now();
+        }
+        LocalDateTime deadline= time.plusHours(task.getSequence());
+        while(deadline.isBefore(LocalDateTime.now())){
+           deadline=deadline.plusHours(task.getSequence());
+        }
+        return deadline;
     }
 
     public LocalDateTime getNextDeadline (int taskId){
@@ -79,7 +88,6 @@ public class TaskDao extends JdbcDaoSupport{
     public List<LocalDateTime> getPastDeadlines(int taskId){
         String sqlGetTimes= "SELECT task_deadline FROM completion WHERE task_id=?";
         return getJdbcTemplate().queryForList(sqlGetTimes,new Object[]{taskId}, LocalDateTime.class);
-
     }
 
     public LocalDateTime getLastDone(Task task){
@@ -91,7 +99,7 @@ public class TaskDao extends JdbcDaoSupport{
         List<LocalDateTime> lastDoneTimes= getJdbcTemplate().queryForList(sqlGetLastDone,new Object[]{taskId}, LocalDateTime.class);
         if (lastDoneTimes.size()>0){//set last done time
             return lastDoneTimes.get(lastDoneTimes.size()-1);
-        } else { return LocalDateTime.now();}
+        } else { return null;}
     }
 
     public void editTask(Task task){
@@ -107,6 +115,16 @@ public class TaskDao extends JdbcDaoSupport{
     public void addTask (Task task){
         String sqlAddTask = "INSERT INTO tasks (task_name, task_description, task_taskType_id, task_sequence) VALUES (?, ?, ?, ?)";
         getJdbcTemplate().update(sqlAddTask, task.getName(), task.getDescription(), task.getType(), task.getSequence());
+    }
+
+    public List<Completion> getCompletions(int taskId){
+        String sqlGetCompletionsForTask = "SELECT * FROM completion WHERE task_id=?";
+        return getJdbcTemplate().query(sqlGetCompletionsForTask, new CompletionMapper());
+    }
+
+    public Long getLastCompletor(int taskId){
+        List<Completion> completions= getCompletions(taskId);
+        return completions.get(completions.size()-1).getEmployeeId();
     }
 
 }

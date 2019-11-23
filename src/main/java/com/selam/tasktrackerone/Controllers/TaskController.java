@@ -1,6 +1,8 @@
 package com.selam.tasktrackerone.Controllers;
 
+import com.selam.tasktrackerone.Dao.EmployeeDao;
 import com.selam.tasktrackerone.Dao.TaskDao;
+import com.selam.tasktrackerone.Model.Employee;
 import com.selam.tasktrackerone.Model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,11 @@ import java.util.*;
 public class TaskController {
     @Autowired
     private TaskDao taskDao;
+    @Autowired
+    private EmployeeDao employeeDao;
 
     @RequestMapping(value = "viewtasks", method = RequestMethod.GET)
-    public String viewTasks(Model model) {
+    public String viewTasks(Model model) {//this might be better if we pass hashmap<task, emloyee>
         List<Task> taskList= taskDao.getAllTasks();
         model.addAttribute("taskList", taskList);
         return "viewtasks";
@@ -65,6 +69,6 @@ public class TaskController {
     @RequestMapping(value="confirmnewtask", method=RequestMethod.POST)
     public String confirmNewTask(Model model, @ModelAttribute(value="task") Task task){//for submitting new task
         taskDao.addTask(task);
-        return "redirect: edittasks";
+        return "redirect:edittasks";
     }
 }

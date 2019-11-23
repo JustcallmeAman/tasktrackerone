@@ -73,8 +73,14 @@ public class EmployeeDao extends JdbcDaoSupport {
         String sqlDeleteEmployee= "DELETE FROM employees WHERE id=?";
         getJdbcTemplate().update(sqlDeleteEmployee, id);
     }
+
     public void addEmployee (Employee employee){
         String sqlAddEmployee = "INSERT INTO employees (employee_username, employee_password, employee_role) VALUES (?, ?, ?)";
         getJdbcTemplate().update(sqlAddEmployee, employee.getUsername(), employee.getEncryptedPassword(), employee.getRole());
+    }
+
+    public Employee getEmployeeById(Long employeeId){
+        String sqlgetEmployee = "SELECT * FROM employees WHERE id=?";
+        return getJdbcTemplate().queryForObject(sqlgetEmployee,new Object[]{employeeId}, new EmployeeMapper());
     }
 }
