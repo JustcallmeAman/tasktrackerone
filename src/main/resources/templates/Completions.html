@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="charset=UTF-8" />
+    <title>Completions</title>
+</head>
+<body>
+<div>
+    <h2 align="center">TASKS</h2>
+    <br>
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>Last done by</th>
+            <th>Last completion time </th>
+            <th></th>
+        </tr>
+        <th:block th:each="wrapper : ${wrappers}">
+            <tr>
+                <td th:text="${wrapper.getTask().getName()}"></td>
+                <td th:text="${wrapper.getEmployee().getUsername()}"></td>
+                <td th:text="${wrapper.getCompletion().getTime()}"></td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+</body>
+</html>

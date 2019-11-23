@@ -1,6 +1,7 @@
 <html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<script type="text/javascript" src="manager.js"></script>
 	<title>MANAGER</title>
 </head>
 
@@ -8,15 +9,23 @@
 
 <div>
 	<form th:action="@{viewtasks}" method="get">
-		<button>View tasks</button>
+		<button type="submit">View tasks</button>
 	</form>
 
 	<form th:action="@{edittasks}" method="get">
-		<button>Edit tasks</button>
+		<button type="submit">Edit tasks</button>
 	</form>
 
-	<form th:action="@{editemployees}" method="get">
-		<button>Edit employees</button>
+	<form th:action="@{employees}" method="get">
+		<button type="submit">Edit employees</button>
+	</form>
+
+	<form th:action="@{completions}" method="POST">
+
+		<label th:for="date">Date</label>
+		<input th:id="date" th:name="date" type="date" min='2000-01-01'/>
+
+		<button type="submit">View completions</button>
 	</form>
 
 </div>
