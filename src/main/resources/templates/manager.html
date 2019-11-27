@@ -1,7 +1,6 @@
 <html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<script type="text/javascript" src="manager.js"></script>
 	<title>MANAGER</title>
 </head>
 
@@ -21,9 +20,11 @@
 	</form>
 
 	<form th:action="@{completions}" method="POST">
+		<label th:for="startDate">FROM:</label>
+		<input th:id="startDate" id="startDate" th:name="startDate" type="date"/>
 
-		<label th:for="date">Date</label>
-		<input th:id="date" th:name="date" type="date" min='2000-01-01'/>
+		<label th:for="endDate">TO:</label>
+		<input th:id="endDate" th:name="endDate" type="date" min='2000-01-01'/>
 
 		<button type="submit">View completions</button>
 	</form>

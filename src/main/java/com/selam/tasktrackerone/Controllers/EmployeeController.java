@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 @Controller
@@ -24,7 +25,24 @@ public class EmployeeController {
     @RequestMapping(value = "editemployee", method = RequestMethod.POST) //to go from employees to edit employee form
     public String editEmployee(Model model, @ModelAttribute(value="employee") Employee employee) {
         model.addAttribute("employee", employee);
-        return "editEmployee"; //html name
+        if (employee.getRole()==1){//if manager
+            return "editManager";
+        } else {
+            return "editEmployee"; //html name
+        }
+
+    } //submitManagerEdit
+
+    @RequestMapping(value = "submitManagerEdit", method = RequestMethod.POST) //to go from employees to edit employee form
+    public String submitManagerEdit(@ModelAttribute(value = "employee") Employee employee, @RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2){
+        if (pwd1.equals(pwd2)){
+            employee.setEncryptedPassword(pwd1);
+            employeeDao.EditEmployee(employee.getId(), employee);
+            return "redirect:employees";
+        } else {
+            return "editerror";
+        }
+
     }
 
     @RequestMapping(value = "submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form

@@ -46,14 +46,12 @@ public class EmployeeDao extends JdbcDaoSupport {
     }
 
     public void EditEmployee(Long id, Employee updatedEmployee){
-        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=? WHERE id=?";
+        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=?, employee_password=? WHERE id=?";
         try{
-            getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), id);
+            getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), updatedEmployee.getEncryptedPassword(), id);
         }
         catch (Exception e){
-            System.out.print("id idnt work");
         }
-
     }
 
     public Employee FindEmployeeAccount (String userName) {

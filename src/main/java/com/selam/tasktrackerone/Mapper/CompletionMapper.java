@@ -17,7 +17,6 @@ public class CompletionMapper implements RowMapper<Completion> {
     @Override
     public Completion mapRow(ResultSet rs, int rowNum) throws SQLException {
         int id = rs.getInt("Id");
-        //Time time = rs.getTime("completion_time");
         Timestamp time = rs.getTimestamp("completion_time");
         String comment = rs.getString("completion_comment");
         Long employeeId = rs.getLong("employee_id");

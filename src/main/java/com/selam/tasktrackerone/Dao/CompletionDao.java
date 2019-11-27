@@ -2,8 +2,6 @@ package com.selam.tasktrackerone.Dao;
 
 import com.selam.tasktrackerone.Mapper.CompletionMapper;
 import com.selam.tasktrackerone.Model.Completion;
-import com.selam.tasktrackerone.Model.Employee;
-import com.selam.tasktrackerone.Model.Task;
 import com.selam.tasktrackerone.Model.Wrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,13 +40,14 @@ public class CompletionDao extends JdbcDaoSupport {
         getJdbcTemplate().update(sqlInputCompletion, time, comment, employeeId, taskId, taskDeadline);
     }
 
-    public List<Completion>getAllCompletions(LocalDateTime time){//gets all completions after time
-        String sqlGetCompletions = "SELECT * FROM completion WHERE completion_time >= ?";
-        return getJdbcTemplate().query(sqlGetCompletions, new Object[]{time}, new CompletionMapper());
+    public List<Completion>getAllCompletions(LocalDateTime startTime, LocalDateTime endTime){//gets all completions after time
+        endTime= endTime.plusDays(1);
+        String sqlGetCompletions = "SELECT * FROM completion WHERE completion_time >= ? AND completion_time<?";
+        return getJdbcTemplate().query(sqlGetCompletions, new Object[]{startTime, endTime}, new CompletionMapper());
     }
-    public List<Wrapper> getWrappers(LocalDateTime time){
+    public List<Wrapper> getWrappers(LocalDateTime startTime, LocalDateTime endTime){
         List<Wrapper> wrappers = new ArrayList<Wrapper>();
-        List<Completion> completions = getAllCompletions(time);
+        List<Completion> completions = getAllCompletions(startTime, endTime);
         for (Completion completion : completions){
             Wrapper wrapper = new Wrapper();
             wrapper.setCompletion(completion);

@@ -23,8 +23,12 @@ public class TaskController {
 
     @RequestMapping(value = "viewtasks", method = RequestMethod.GET)
     public String viewTasks(Model model) {//this might be better if we pass hashmap<task, emloyee>
-        List<Task> taskList= taskDao.getAllTasks();
-        model.addAttribute("taskList", taskList);
+        try{
+            List<Task> taskList= taskDao.getAllTasks();
+            model.addAttribute("taskList", taskList);
+        } catch (Exception e){
+
+        }
         return "viewtasks";
     }
 

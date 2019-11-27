@@ -41,14 +41,21 @@ public class CompletionController {
         return "redirect:viewtasks"; //html name
     }
 
-
     @RequestMapping(value = "completions", method = RequestMethod.POST) //for submitting the completion form after its filled out.
-    public String showCompletions(Model model, @RequestParam("date") String dateString) {
-        LocalDate date= LocalDate.parse(dateString);
-        LocalDateTime dateTime= LocalDateTime.of(date, LocalTime.of(00,00));
-        List<Wrapper> wrappers= completionDao.getWrappers(dateTime);
-        model.addAttribute("wrappers", wrappers);
-        return "completions"; //html name
+    public String showCompletions(Model model, @RequestParam("startDate") String startDateString, @RequestParam("endDate") String endDateString) {
+        try{
+            LocalDate startDate= LocalDate.parse(startDateString);
+            LocalDateTime startDateTime= LocalDateTime.of(startDate, LocalTime.of(00,00));
+            LocalDate endDate= LocalDate.parse(endDateString);
+            LocalDateTime endDateTime= LocalDateTime.of(endDate, LocalTime.of(00,00));
+
+            List<Wrapper> wrappers= completionDao.getWrappers(startDateTime, endDateTime);
+            model.addAttribute("wrappers", wrappers);
+            return "completions"; //html name
+        } catch (Exception e){
+
+        }
+        return "completions";
     }
 
 

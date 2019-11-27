@@ -27,9 +27,13 @@ public class TaskDao extends JdbcDaoSupport{
     JdbcTemplate jdbcTemplate;
 
     public Task getTaskById(int id){
-        TaskMapper taskMapper= new TaskMapper();
-        String sqlGetTaskById= "SELECT * FROM tasks Where id= ?";
-        return getJdbcTemplate().queryForObject(sqlGetTaskById, new Object[]{id}, taskMapper);
+        try{
+            TaskMapper taskMapper= new TaskMapper();
+            String sqlGetTaskById= "SELECT * FROM tasks Where id= ?";
+            return getJdbcTemplate().queryForObject(sqlGetTaskById, new Object[]{id}, taskMapper);
+        } catch (Exception e){
+            return null;
+        }
     }
 
     public List<Task> getAllTasks() {
@@ -42,7 +46,7 @@ public class TaskDao extends JdbcDaoSupport{
             }
             return  tasks;
         } catch (Exception e){
-            return null;
+            return new ArrayList<Task>();
         }
     }
 
@@ -52,33 +56,41 @@ public class TaskDao extends JdbcDaoSupport{
 
     public int getTaskType(int taskId){
         String sqlGetTaskType= "SELECT task_taskType_id FROM tasks WHERE id=?";
-        int taskType = getJdbcTemplate().queryForObject(sqlGetTaskType,new Object[]{taskId}, Integer.class);
-        return taskType;
+        try{
+            int taskType = getJdbcTemplate().queryForObject(sqlGetTaskType,new Object[]{taskId}, Integer.class);
+            return taskType;
+        } catch (Exception e){
+            return -1;
+        }
     }
 
     public LocalDateTime getNextDeadline (Task task){
         LocalDateTime time;
-        if (task.getType()==1){//periodical-next deadline depends on past deadline
-            List<LocalDateTime> times = getPastDeadlines(task.getId());
-            if(times.size()>0){
-                time=times.get(times.size()-1);
-                if (task.getLastDone().isBefore(time.plusHours(1))){//if task was last done at least 1 hr before next deadline, keep this deadline as not completed.
-                    return time;
+        try{
+            if (task.getType()==1){//periodical-next deadline depends on past deadline
+                List<LocalDateTime> times = getPastDeadlines(task.getId());
+                if(times.size()>0){
+                    time=times.get(times.size()-1);
+                    if (task.getLastDone().isBefore(time.plusHours(1))){//if task was last done at least 1 hr before next deadline, keep this deadline as not completed.
+                        return time;
+                    }
+                } else {
+                    time = LocalDateTime.now();
                 }
-            } else {
-                time = LocalDateTime.now();
+            } else {//frequent- next deadline depends on last done
+                time = getLastDone(task.getId());
             }
-        } else {//frequent- next deadline depends on last done
-            time = getLastDone(task.getId());
+            if (time==null) {
+                time=LocalDateTime.now();
+            }
+            LocalDateTime deadline= time.plusHours(task.getSequence());
+            while(deadline.isBefore(LocalDateTime.now())){
+                deadline=deadline.plusHours(task.getSequence());
+            }
+            return deadline;
+        } catch(Exception e){
+            return null;
         }
-        if (time==null) {
-            time=LocalDateTime.now();
-        }
-        LocalDateTime deadline= time.plusHours(task.getSequence());
-        while(deadline.isBefore(LocalDateTime.now())){
-           deadline=deadline.plusHours(task.getSequence());
-        }
-        return deadline;
     }
 
     public LocalDateTime getNextDeadline (int taskId){
@@ -86,8 +98,12 @@ public class TaskDao extends JdbcDaoSupport{
     }
 
     public List<LocalDateTime> getPastDeadlines(int taskId){
-        String sqlGetTimes= "SELECT task_deadline FROM completion WHERE task_id=?";
-        return getJdbcTemplate().queryForList(sqlGetTimes,new Object[]{taskId}, LocalDateTime.class);
+        try{
+            String sqlGetTimes= "SELECT task_deadline FROM completion WHERE task_id=?";
+            return getJdbcTemplate().queryForList(sqlGetTimes,new Object[]{taskId}, LocalDateTime.class);
+        } catch(Exception e){
+            return null;
+        }
     }
 
     public LocalDateTime getLastDone(Task task){
@@ -95,36 +111,62 @@ public class TaskDao extends JdbcDaoSupport{
     }
 
     public LocalDateTime getLastDone(int taskId){
-        String sqlGetLastDone = "SELECT completion_time FROM completion WHERE task_id=?";
-        List<LocalDateTime> lastDoneTimes= getJdbcTemplate().queryForList(sqlGetLastDone,new Object[]{taskId}, LocalDateTime.class);
-        if (lastDoneTimes.size()>0){//set last done time
-            return lastDoneTimes.get(lastDoneTimes.size()-1);
-        } else { return null;}
+        try {
+            String sqlGetLastDone = "SELECT completion_time FROM completion WHERE task_id=?";
+            List<LocalDateTime> lastDoneTimes= getJdbcTemplate().queryForList(sqlGetLastDone,new Object[]{taskId}, LocalDateTime.class);
+            if (lastDoneTimes.size()>0){//set last done time
+                return lastDoneTimes.get(lastDoneTimes.size()-1);
+            } else { return null;}
+        } catch (Exception e){
+            return null;
+        }
     }
 
     public void editTask(Task task){
-        String sqlEditTask= "UPDATE tasks SET task_name=? WHERE id=?";
-        getJdbcTemplate().update(sqlEditTask, task.getName(),task.getId());
+        try{
+            String sqlEditTask= "UPDATE tasks SET task_name=? WHERE id=?";
+            getJdbcTemplate().update(sqlEditTask, task.getName(),task.getId());
+        } catch (Exception e) {
+
+        }
     }
 
     public void deleteTask(Task task){
-        String sqlDeleteTask= "DELETE FROM tasks WHERE id=?";
-        getJdbcTemplate().update(sqlDeleteTask, task.getId());
+        try{
+            String sqlDeleteTask= "DELETE FROM tasks WHERE id=?";
+            getJdbcTemplate().update(sqlDeleteTask, task.getId());
+        } catch(Exception e) {
+
+        }
+
     }
 
     public void addTask (Task task){
-        String sqlAddTask = "INSERT INTO tasks (task_name, task_description, task_taskType_id, task_sequence) VALUES (?, ?, ?, ?)";
-        getJdbcTemplate().update(sqlAddTask, task.getName(), task.getDescription(), task.getType(), task.getSequence());
+        try{
+            String sqlAddTask = "INSERT INTO tasks (task_name, task_description, task_taskType_id, task_sequence) VALUES (?, ?, ?, ?)";
+            getJdbcTemplate().update(sqlAddTask, task.getName(), task.getDescription(), task.getType(), task.getSequence());
+        } catch(Exception e) {
+
+        }
     }
 
     public List<Completion> getCompletions(int taskId){
-        String sqlGetCompletionsForTask = "SELECT * FROM completion WHERE task_id=?";
-        return getJdbcTemplate().query(sqlGetCompletionsForTask, new CompletionMapper());
+        try{
+            String sqlGetCompletionsForTask = "SELECT * FROM completion WHERE task_id=?";
+            return getJdbcTemplate().query(sqlGetCompletionsForTask, new Object[]{taskId}, new CompletionMapper());
+        } catch (Exception e){
+            return null;
+        }
     }
 
     public Long getLastCompletor(int taskId){
-        List<Completion> completions= getCompletions(taskId);
-        return completions.get(completions.size()-1).getEmployeeId();
+        try{
+            List<Completion> completions= getCompletions(taskId);
+            return completions.get(completions.size()-1).getEmployeeId();
+        } catch (Exception e){
+            return null;
+        }
+
     }
 
 }
