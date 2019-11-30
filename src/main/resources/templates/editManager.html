@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit employee</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="card card-container-lg">
+        <h1>edit employee</h1>
+        <br>
+        <form th:action="@{submitManagerEdit}" th:object="${employee}" method='POST'>
+
+            <div class="form-group">
+                <label for="username">Name</label>
+                <input type="text" id="username" class="form-control" th:field="*{username}" required />
+            </div>
+            <div>
+                <label th:for="pwd1">Password:</label>
+                <input th:id="pwd1" th:name="pwd1" type="password"/>
+
+                <label th:for="pwd2">Confirm password:</label>
+                <input th:id="pwd2" th:name="pwd2" type="password"/>
+            </div>
+            <div>
+                <select th:field="*{role}" id="role" required>
+                    <option th:each="i : ${#numbers.sequence(1, 2)}" th:value="${i}" th:text="${i}">
+                    </option>
+                </select>
+            </div>
+            <input type="hidden" th:value="${employee.getId()}" name="id" />
+            <button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button>
+        </form>
+        <a th:href="@{employees}">Cancel</a>
+    </div>
+</div>
+<script>
+    Function pwdComparison (){
+        var firstInput = document.getElementById("pwd1").value;
+        var secondInput = document.getElementById("pwd2").value;
+        if (firstInput !=== secondInput) {
+            alert("password is not correct.")
+        }
+    }
+</script>
+
+</body>
+</html>

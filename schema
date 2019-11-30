@@ -1,0 +1,165 @@
+DROP SCHEMA IF EXISTS `raceway` ;
+CREATE SCHEMA IF NOT EXISTS `raceway` 
+
+CREATE TABLE IF NOT EXISTS `raceway`.`completion` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `completion_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `completion_comment` VARCHAR(45) NULL DEFAULT NULL,
+  `employee_id` INT(11) NOT NULL,
+  `task_id` INT(11) NOT NULL,
+  `task_deadline` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  INDEX `id_idx` (`employee_id` ASC),
+  INDEX `task_id_idx` (`task_id` ASC),
+  CONSTRAINT `completion_employee_id`
+    FOREIGN KEY (`employee_id`)
+    REFERENCES `raceway`.`employees` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `completion_task_id`
+    FOREIGN KEY (`task_id`)
+    REFERENCES `raceway`.`tasks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 93
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`deadlines` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `task_id` INT(11) NOT NULL,
+  `deadline_time` TIME(3) NOT NULL,
+  `completion_id` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `completion_id_idx` (`completion_id` ASC),
+  INDEX `task_id_idx` (`task_id` ASC),
+  CONSTRAINT `deadline_completion_id`
+    FOREIGN KEY (`completion_id`)
+    REFERENCES `raceway`.`completion` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `deadline_task_id`
+    FOREIGN KEY (`task_id`)
+    REFERENCES `raceway`.`tasks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 10
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`employees` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `employee_username` VARCHAR(45) NOT NULL,
+  `employee_password` VARCHAR(45) NULL DEFAULT NULL,
+  `employee_role` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `employee_username_UNIQUE` (`employee_username` ASC),
+  INDEX `employee_role_idx` (`employee_role` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 11
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`roles` (
+  `role_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `role_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`role_id`),
+  CONSTRAINT `employee_role`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `raceway`.`employees` (`employee_role`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`spring_session` (
+  `PRIMARY_ID` CHAR(36) NOT NULL,
+  `SESSION_ID` CHAR(36) NOT NULL,
+  `CREATION_TIME` BIGINT(20) NOT NULL,
+  `LAST_ACCESS_TIME` BIGINT(20) NOT NULL,
+  `MAX_INACTIVE_INTERVAL` INT(11) NOT NULL,
+  `EXPIRY_TIME` BIGINT(20) NOT NULL,
+  `PRINCIPAL_NAME` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`PRIMARY_ID`),
+  UNIQUE INDEX `SPRING_SESSION_IX1` (`SESSION_ID` ASC),
+  INDEX `SPRING_SESSION_IX2` (`EXPIRY_TIME` ASC),
+  INDEX `SPRING_SESSION_IX3` (`PRINCIPAL_NAME` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+ROW_FORMAT = DYNAMIC
+
+CREATE TABLE IF NOT EXISTS `raceway`.`spring_session_attributes` (
+  `SESSION_PRIMARY_ID` CHAR(36) NOT NULL,
+  `ATTRIBUTE_NAME` VARCHAR(200) NOT NULL,
+  `ATTRIBUTE_BYTES` BLOB NOT NULL,
+  PRIMARY KEY (`SESSION_PRIMARY_ID`, `ATTRIBUTE_NAME`),
+  CONSTRAINT `SPRING_SESSION_ATTRIBUTES_FK`
+    FOREIGN KEY (`SESSION_PRIMARY_ID`)
+    REFERENCES `raceway`.`spring_session` (`PRIMARY_ID`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+ROW_FORMAT = DYNAMIC
+
+CREATE TABLE IF NOT EXISTS `raceway`.`taskfrequencies` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `task_id` INT(11) NOT NULL,
+  `taskfrequency_frequency` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `task_id_UNIQUE` (`task_id` ASC),
+  INDEX `taskFrequency_task_id_idx` (`task_id` ASC),
+  CONSTRAINT `taskFrequency_task_id`
+    FOREIGN KEY (`task_id`)
+    REFERENCES `raceway`.`tasks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`taskperiods` (
+  `id` INT(11) NOT NULL,
+  `task_id` INT(11) NOT NULL,
+  `taskperiod_period` TIME(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `taskperiod_task_id_idx` (`task_id` ASC),
+  CONSTRAINT `taskperiod_task_id`
+    FOREIGN KEY (`task_id`)
+    REFERENCES `raceway`.`tasks` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`tasks` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `task_name` VARCHAR(45) NOT NULL,
+  `task_description` VARCHAR(140) NULL DEFAULT NULL,
+  `task_taskType_id` INT(11) NOT NULL,
+  `task_sequence` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `tasks_taskTypes_id_idx` (`task_taskType_id` ASC),
+  CONSTRAINT `tasks_taskType_id`
+    FOREIGN KEY (`task_taskType_id`)
+    REFERENCES `raceway`.`tasktypes` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 58
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`tasktypes` (
+  `id` INT(11) NOT NULL,
+  `taskType_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1
+
+CREATE TABLE IF NOT EXISTS `raceway`.`wasted_items` (
+  `wasted_item_id` INT(11) NOT NULL,
+  `wasted_item_name` VARCHAR(45) NOT NULL,
+  `wasted_item_count` INT(11) NOT NULL,
+  `wasted_item_cost` INT(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`wasted_item_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1

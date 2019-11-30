@@ -1,16 +1,30 @@
 package com.selam.tasktrackerone.Config;
 
+import com.selam.tasktrackerone.Dao.EmployeeDao;
+import com.selam.tasktrackerone.Model.Employee;
 import com.selam.tasktrackerone.Services.UserDetailsServiceImpl;
+import javassist.expr.Instanceof;
+import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.proxy.NoOp;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import sun.security.util.Password;
 
-@Configuration
+import javax.sql.DataSource;
+import java.util.List;
+
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -19,24 +33,67 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    @Bean
+    @Autowired
+    DataSource dataSource;
+
+   /* @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
-    }
+    }*/
+   @Bean
+   public PasswordEncoder passwordEncoder() {
+       return NoOpPasswordEncoder.getInstance();
+   }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery(
+                    "SELECT employee_username, employee_password, enabled FROM employees WHERE employee_username=?"
+                )
+                .authoritiesByUsernameQuery(
+                    "SELECT employee_username, authority FROM authorities WHERE employee_username =?"
+                );
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure (HttpSecurity http) throws Exception{
+        http.authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/manager").hasRole("manager")
+                .and().formLogin()
+                .and().logout();
+    }
 
-        http.csrf().disable();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*http.csrf().disable();
 
         // The pages that do not require login
         http.authorizeRequests().antMatchers("/login", "/logout", "/registration", "/").permitAll();
@@ -60,5 +117,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("password")
                 // Config for Logout Page
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
-    }
+    }*/
 }

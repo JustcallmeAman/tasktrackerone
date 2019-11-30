@@ -18,8 +18,6 @@ import java.util.*;
 public class TaskController {
     @Autowired
     private TaskDao taskDao;
-    @Autowired
-    private EmployeeDao employeeDao;
 
     @RequestMapping(value = "viewtasks", method = RequestMethod.GET)
     public String viewTasks(Model model) {//this might be better if we pass hashmap<task, emloyee>

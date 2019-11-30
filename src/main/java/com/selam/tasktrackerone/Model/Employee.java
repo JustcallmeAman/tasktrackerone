@@ -1,5 +1,10 @@
 package com.selam.tasktrackerone.Model;
 
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "employees")
 public class Employee {
 
     Long id;
@@ -16,6 +21,7 @@ public class Employee {
         this.role = role;
     }
 
+    @Id
     public Long getId() {
         return id;
     }
