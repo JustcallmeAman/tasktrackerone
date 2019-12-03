@@ -22,10 +22,15 @@
                 <label for="comment">comment </label>
                 <input type="text" id="comment" class="form-control" th:field="*{comment}" />
             </div>
+
             <div class="form-group">
-                <label for="employeeid">employee id </label>
-                <input type="number" id="employeeid" class="form-control" th:field="*{employeeId}" />
+                <select th:field="*{employeeUsername}">
+                    <option th:each="i : ${usernames}" th:value="${i}" th:text="${i}">
+                    </option>
+                </select>
             </div>
+
+
             <input type="hidden" th:value="${task.getId()}" name="taskId" />
 
             <div>

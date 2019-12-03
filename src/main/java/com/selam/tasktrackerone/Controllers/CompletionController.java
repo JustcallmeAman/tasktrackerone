@@ -1,6 +1,7 @@
 package com.selam.tasktrackerone.Controllers;
 
 import com.selam.tasktrackerone.Dao.CompletionDao;
+import com.selam.tasktrackerone.Dao.EmployeeDao;
 import com.selam.tasktrackerone.Model.Completion;
 import com.selam.tasktrackerone.Model.Task;
 import com.selam.tasktrackerone.Model.Wrapper;
@@ -25,11 +26,15 @@ import java.util.List;
 public class CompletionController {
     @Autowired
     private CompletionDao completionDao;
+    @Autowired
+    private EmployeeDao employeeDao;
 
     @RequestMapping(value = "addcompletion", method = RequestMethod.POST) //for storing task info and going to completion form from viewtasks
     public String addCompletion(Model model, @ModelAttribute(value="task") Task task) {
         Completion completion=new Completion();
+        List<String> usernames = employeeDao.getUsernames();
         model.addAttribute("completion", completion);
+        model.addAttribute("usernames", usernames);
         return "completionform"; //html name
     }
 
@@ -41,7 +46,7 @@ public class CompletionController {
         return "redirect:viewtasks"; //html name
     }
 
-    @RequestMapping(value = "completions", method = RequestMethod.POST) //for submitting the completion form after its filled out.
+    @RequestMapping(value = "manager/completions", method = RequestMethod.POST) //for submitting the completion form after its filled out.
     public String showCompletions(Model model, @RequestParam("startDate") String startDateString, @RequestParam("endDate") String endDateString) {
         try{
             LocalDate startDate= LocalDate.parse(startDateString);
@@ -51,11 +56,11 @@ public class CompletionController {
 
             List<Wrapper> wrappers= completionDao.getWrappers(startDateTime, endDateTime);
             model.addAttribute("wrappers", wrappers);
-            return "completions"; //html name
+            return "manager/completions"; //html name
         } catch (Exception e){
 
         }
-        return "completions";
+        return "manager/completions";
     }
 
 

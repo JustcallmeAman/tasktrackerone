@@ -11,8 +11,8 @@ public class Controller {
         return "login";
     }
 
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    /*@RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout() {
         return "logout";
-    }
+    }*/
 }

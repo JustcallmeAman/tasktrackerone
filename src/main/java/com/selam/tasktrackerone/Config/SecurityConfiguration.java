@@ -20,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import sun.security.util.Password;
 
 import javax.sql.DataSource;
@@ -36,35 +37,46 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-   /* @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    @Bean
+    public static BCryptPasswordEncoder passwordEncode() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
-    }*/
-   @Bean
+    }
+   /*@Bean
    public PasswordEncoder passwordEncoder() {
        return NoOpPasswordEncoder.getInstance();
-   }
+   }*/
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)throws Exception{
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery(
-                    "SELECT employee_username, employee_password, enabled FROM employees WHERE employee_username=?"
-                )
-                .authoritiesByUsernameQuery(
-                    "SELECT employee_username, authority FROM authorities WHERE employee_username =?"
-                );
+    protected void configure(AuthenticationManagerBuilder auth){
+        try {
+            auth.jdbcAuthentication()
+                    .dataSource(dataSource)
+                    .usersByUsernameQuery(
+                        "SELECT employee_username, employee_password, enabled FROM employees WHERE employee_username=?"
+                    )
+                    .authoritiesByUsernameQuery(
+                        "SELECT employee_username, authority FROM authorities WHERE employee_username =?"
+                    );
+        } catch (Exception e) {
+            System.out.print("ERROR: login: ");
+            e.printStackTrace();
+        }
     }
 
     @Override
-    protected void configure (HttpSecurity http) throws Exception{
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/manager").hasRole("manager")
-                .and().formLogin()
-                .and().logout();
+    protected void configure (HttpSecurity http){
+
+        try {
+            http.authorizeRequests()
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/manager/**").hasAuthority("manager")
+                    .and().formLogin()
+                    .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
+        } catch (Exception e) {
+            System.out.print("ERROR: auth:");
+            e.printStackTrace();
+        }
     }
 
 

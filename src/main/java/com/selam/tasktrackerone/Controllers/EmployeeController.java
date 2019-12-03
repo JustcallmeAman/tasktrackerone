@@ -15,25 +15,25 @@ import java.util.List;
 public class EmployeeController {
     @Autowired
     private EmployeeDao employeeDao;
-    @RequestMapping(value = "employees", method = RequestMethod.GET)
+    @RequestMapping(value = "manager/employees", method = RequestMethod.GET)
     public String viewEmployees(Model model) {
         List<Employee> employeeList= employeeDao.getAllEmployees();
         model.addAttribute("employeeList", employeeList);
-        return "employees"; //html name
+        return "manager/employees"; //html name
     }
 
-    @RequestMapping(value = "editemployee", method = RequestMethod.POST) //to go from employees to edit employee form
+    @RequestMapping(value = "manager/editemployee", method = RequestMethod.POST) //to go from employees to edit employee form
     public String editEmployee(Model model, @ModelAttribute(value="employee") Employee employee) {
         model.addAttribute("employee", employee);
         if (employee.getRole()==1){//if manager
-            return "editManager";
+            return "manager/editManager";
         } else {
-            return "editEmployee"; //html name
+            return "manager/editEmployee"; //html name
         }
 
     } //submitManagerEdit
 
-    @RequestMapping(value = "submitManagerEdit", method = RequestMethod.POST) //to go from employees to edit employee form
+    @RequestMapping(value = "manager/submitManagerEdit", method = RequestMethod.POST) //to go from employees to edit employee form
     public String submitManagerEdit(@ModelAttribute(value = "employee") Employee employee, @RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2){
         if (pwd1.equals(pwd2)){
             employee.setEncryptedPassword(pwd1);
@@ -45,26 +45,26 @@ public class EmployeeController {
 
     }
 
-    @RequestMapping(value = "submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form
+    @RequestMapping(value = "manager/submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form
     public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee){
         employeeDao.EditEmployee(employee.getId(), employee);
         return "redirect:employees";
     }
 
-    @RequestMapping(value = "confirmEmployeeDeletion", method = RequestMethod.POST)
+    @RequestMapping(value = "manager/confirmEmployeeDeletion", method = RequestMethod.POST)
     public String deleteEmployee(@ModelAttribute(value= "employee") Employee employee){
         employeeDao.deleteEmployee(employee.getId());
         return "redirect:employees";
     }
 
-    @RequestMapping(value = "addemployee", method = RequestMethod.GET)
+    @RequestMapping(value = "manager/addemployee", method = RequestMethod.GET)
     public String addEmployee(Model model){
         Employee employee = new Employee();
         model.addAttribute("employee", employee);
-        return "addEmployee";
+        return "manager/addEmployee";
     }
 
-    @RequestMapping(value = "addnewemployee", method = RequestMethod.POST)
+    @RequestMapping(value = "manager/addnewemployee", method = RequestMethod.POST)
     public String addNewEmployee(@ModelAttribute(value= "employee") Employee employee){
         employeeDao.addEmployee(employee);
         return "redirect:employees";

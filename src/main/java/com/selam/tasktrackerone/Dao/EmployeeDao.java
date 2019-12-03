@@ -75,10 +75,25 @@ public class EmployeeDao extends JdbcDaoSupport {
     public void addEmployee (Employee employee){
         String sqlAddEmployee = "INSERT INTO employees (employee_username, employee_password, employee_role) VALUES (?, ?, ?)";
         getJdbcTemplate().update(sqlAddEmployee, employee.getUsername(), employee.getEncryptedPassword(), employee.getRole());
+        String sqlAddAuthority = "INSERT INTO authorities (authority, employee_username) VALUES (?, ?)";
+        if(employee.getRole()==1){//employee is a manager
+            getJdbcTemplate().update(sqlAddAuthority, "manager", employee.getUsername());
+        } else if (employee.getRole()==2){//employee is a user
+            getJdbcTemplate().update(sqlAddAuthority, "user", employee.getUsername());
+        }
     }
 
     public Employee getEmployeeById(Long employeeId){
         String sqlgetEmployee = "SELECT * FROM employees WHERE id=?";
         return getJdbcTemplate().queryForObject(sqlgetEmployee,new Object[]{employeeId}, new EmployeeMapper());
+    }
+    public Employee getEmployeeByUsername(String username){
+        String sqlgetEmployee = "SELECT * FROM employees WHERE employee_username=?";
+        return getJdbcTemplate().queryForObject(sqlgetEmployee,new Object[]{username}, new EmployeeMapper());
+    }
+
+    public List<String> getUsernames(){
+        String sqlGetUsernames = "SELECT employee_username FROM employees";
+        return getJdbcTemplate().queryForList(sqlGetUsernames,new Object[]{}, String.class);
     }
 }

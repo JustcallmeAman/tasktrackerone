@@ -19,9 +19,9 @@ public class CompletionMapper implements RowMapper<Completion> {
         int id = rs.getInt("Id");
         Timestamp time = rs.getTimestamp("completion_time");
         String comment = rs.getString("completion_comment");
-        Long employeeId = rs.getLong("employee_id");
+        String employeeUsername = rs.getString("employee_username");
         int taskId = rs.getInt("task_id");
         Timestamp taskDeadline = rs.getTimestamp("task_deadline");
-        return new Completion(id, time.toLocalDateTime(), comment, employeeId, taskId, taskDeadline.toLocalDateTime());
+        return new Completion(id, time.toLocalDateTime(), comment, employeeUsername, taskId, taskDeadline.toLocalDateTime());
     }
 }

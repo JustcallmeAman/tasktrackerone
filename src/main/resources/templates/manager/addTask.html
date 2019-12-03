@@ -24,7 +24,7 @@
 
         <div class="form-group">
             <select th:field="*{sequence}">
-                <option th:each="i : ${#numbers.sequence(0, 23)}" th:value="${i}" th:text="${i}">
+                <option th:each="i : ${#numbers.sequence(1, 23)}" th:value="${i}" th:text="${i}">
                 </option>
                 <option th:value="24"> once a day</option>
                 <option th:value="48"> every other day</option>
@@ -34,12 +34,12 @@
 
         <div>
             <br>
-            <center><button class="btn btn-lg btn-primary btn-signin" type="submit">next</button></center>
+            <center><button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button></center>
             <br>
         </div>
         <div >
             <center>
-                <a th:href="@{/admin/dashboard}">Cancel</a>
+                <a th:href="@{edittasks}">Cancel</a>
             </center>
 
         </div>

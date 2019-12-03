@@ -1,5 +1,8 @@
 package com.selam.tasktrackerone.Model;
 
+import com.selam.tasktrackerone.Config.SecurityConfiguration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,10 +17,10 @@ public class Employee {
     public Employee(){
 
     }
-    public Employee(Long id, String username, String encryptedPassword, int role) {
+    public Employee(Long id, String username, String password, int role) {
         this.id = id;
         this.username = username;
-        this.encryptedPassword = encryptedPassword;
+        this.encryptedPassword = SecurityConfiguration.passwordEncode().encode(password);
         this.role = role;
     }
 
@@ -42,8 +45,8 @@ public class Employee {
         return encryptedPassword;
     }
 
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setEncryptedPassword(String password) {
+        this.encryptedPassword = SecurityConfiguration.passwordEncode().encode(password);
     }
 
     public int getRole() {

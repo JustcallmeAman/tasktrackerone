@@ -33,11 +33,11 @@ public class CompletionDao extends JdbcDaoSupport {
         //stores completion in database, and if completed task is periodical, links completion to relevant deadline.
         LocalDateTime time=c.getTime();
         String comment=c.getComment();
-        Long employeeId=c.getEmployeeId();
+        String employeeUsername=c.getEmployeeUsername();
         int taskId=c.getTaskId();
         LocalDateTime taskDeadline = taskDao.getNextDeadline(taskId);
-        String sqlInputCompletion ="INSERT INTO completion(completion_time, completion_comment, employee_id, task_id, task_deadline) VALUE(?,?,?,?,?)";
-        getJdbcTemplate().update(sqlInputCompletion, time, comment, employeeId, taskId, taskDeadline);
+        String sqlInputCompletion ="INSERT INTO completion(completion_time, completion_comment, employee_Username, task_id, task_deadline) VALUE(?,?,?,?,?)";
+        getJdbcTemplate().update(sqlInputCompletion, time, comment, employeeUsername, taskId, taskDeadline);
     }
 
     public List<Completion>getAllCompletions(LocalDateTime startTime, LocalDateTime endTime){//gets all completions after time
@@ -52,7 +52,7 @@ public class CompletionDao extends JdbcDaoSupport {
             Wrapper wrapper = new Wrapper();
             wrapper.setCompletion(completion);
             wrapper.setTask(taskDao.getTaskById(completion.getTaskId()));
-            wrapper.setEmployee(employeeDao.getEmployeeById(completion.getEmployeeId()));
+            wrapper.setEmployee(employeeDao.getEmployeeByUsername(completion.getEmployeeUsername()));
             wrappers.add(wrapper);
         }
         return wrappers;
