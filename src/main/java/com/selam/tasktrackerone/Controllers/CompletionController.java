@@ -32,7 +32,7 @@ public class CompletionController {
     @RequestMapping(value = "addcompletion", method = RequestMethod.POST) //for storing task info and going to completion form from viewtasks
     public String addCompletion(Model model, @ModelAttribute(value="task") Task task) {
         Completion completion=new Completion();
-        List<String> usernames = employeeDao.getUsernames();
+        List<String> usernames = employeeDao.getEnabledUsernames();
         model.addAttribute("completion", completion);
         model.addAttribute("usernames", usernames);
         return "completionform"; //html name

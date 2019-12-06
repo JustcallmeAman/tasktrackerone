@@ -24,16 +24,16 @@
                 </form>
             </td>
             <td>
-                <form th:align="right" th:action="@{confirmTaskDeletion}" th:object="${task}" method="post">
+                <form th:align="right" th:action="@{confirmTaskEnableDisable}" th:object="${task}" method="post">
                     <input type="hidden" th:value="*{id}" name="id" />
                     <input type="hidden" th:value="*{name}" name="name" />
-                    <button type="submit" class="btn btn-secondary">delete task</button>
+                    <button type="submit" class="btn btn-secondary">Enable/Disable task</button>
                 </form>
             </td>
         </tr>
     </th:block>
 </table>
-<a href="manager">back to dashboard</a>
+<a href="../manager">back to dashboard</a>
 
 </body>
 </html>

@@ -72,7 +72,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/").permitAll()
                     .antMatchers("/manager/**").hasAuthority("manager")
                     .and().formLogin()
-                    .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
+                    .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                    .and().exceptionHandling().accessDeniedPage("accessDenied.jsp");
         } catch (Exception e) {
             System.out.print("ERROR: auth:");
             e.printStackTrace();

@@ -11,8 +11,9 @@ public class Controller {
         return "login";
     }
 
-    /*@RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout() {
-        return "logout";
-    }*/
+    @RequestMapping(value = "../viewtasks", method = RequestMethod.GET)
+    public String viewTasks (){
+        return "../viewtasks";
+    }
+
 }

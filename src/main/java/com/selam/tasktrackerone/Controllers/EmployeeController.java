@@ -25,30 +25,20 @@ public class EmployeeController {
     @RequestMapping(value = "manager/editemployee", method = RequestMethod.POST) //to go from employees to edit employee form
     public String editEmployee(Model model, @ModelAttribute(value="employee") Employee employee) {
         model.addAttribute("employee", employee);
-        if (employee.getRole()==1){//if manager
-            return "manager/editManager";
-        } else {
-            return "manager/editEmployee"; //html name
-        }
-
-    } //submitManagerEdit
-
-    @RequestMapping(value = "manager/submitManagerEdit", method = RequestMethod.POST) //to go from employees to edit employee form
-    public String submitManagerEdit(@ModelAttribute(value = "employee") Employee employee, @RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2){
-        if (pwd1.equals(pwd2)){
-            employee.setEncryptedPassword(pwd1);
-            employeeDao.EditEmployee(employee.getId(), employee);
-            return "redirect:employees";
-        } else {
-            return "editerror";
-        }
+        return "manager/editEmployee";
 
     }
 
-    @RequestMapping(value = "manager/submitEmployeeEdit", method = RequestMethod.POST) //to save the edits of employee from editemployee form
-    public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee){
-        employeeDao.EditEmployee(employee.getId(), employee);
-        return "redirect:employees";
+    @RequestMapping(value = "manager/submitEmployeeEdit", method = RequestMethod.POST) //to go from employees to edit employee form
+    public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee, @RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2, @RequestParam("enabled") String enabled,Model model){
+        if (pwd1.equals(pwd2)){
+            employee.setEncryptedPassword(pwd1);
+            employeeDao.EditEmployee(employee.getId(), employee, enabled);
+            return "redirect:employees";
+        } else {
+            model.addAttribute("employee", employee);
+            return "manager/editemployeeerror";
+        }
     }
 
     @RequestMapping(value = "manager/confirmEmployeeDeletion", method = RequestMethod.POST)

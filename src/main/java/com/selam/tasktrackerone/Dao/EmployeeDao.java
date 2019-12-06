@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +46,33 @@ public class EmployeeDao extends JdbcDaoSupport {
         }
     }
 
-    public void EditEmployee(Long id, Employee updatedEmployee){
-        String sqlEditEmployee= "UPDATE employees SET employee_username=?, employee_role=?, employee_password=? WHERE id=?";
+    public void EditEmployee(Long id, Employee updatedEmployee, String enabled){
+
         try{
-            getJdbcTemplate().update(sqlEditEmployee, updatedEmployee.getUsername(), updatedEmployee.getRole(), updatedEmployee.getEncryptedPassword(), id);
+            String sqlEditEmployee= "UPDATE employees SET employee_password=?, enabled=? WHERE id=?";
+            int enable;
+            if(enabled.equals("active")){
+                enable =1;
+            } else {
+                enable =0;
+            }
+            Object[] vals = new Object[]{ updatedEmployee.getEncryptedPassword(), enable, id};
+            getJdbcTemplate().update(sqlEditEmployee, vals);
+
+
+            /*String sqlGiveNewAuthority = " UPDATE authorities SET authority=? WHERE employee_username=?";
+            String authority;
+            if (updatedEmployee.getRole()==1){
+                authority = "manager";
+            } else {
+                authority= "user";
+            }
+            vals = new Object[]{authority, updatedEmployee.getUsername()};
+            getJdbcTemplate().update(sqlGiveNewAuthority,vals);*/
         }
         catch (Exception e){
         }
+
     }
 
     public Employee FindEmployeeAccount (String userName) {
@@ -87,6 +108,7 @@ public class EmployeeDao extends JdbcDaoSupport {
         String sqlgetEmployee = "SELECT * FROM employees WHERE id=?";
         return getJdbcTemplate().queryForObject(sqlgetEmployee,new Object[]{employeeId}, new EmployeeMapper());
     }
+
     public Employee getEmployeeByUsername(String username){
         String sqlgetEmployee = "SELECT * FROM employees WHERE employee_username=?";
         return getJdbcTemplate().queryForObject(sqlgetEmployee,new Object[]{username}, new EmployeeMapper());
@@ -94,6 +116,11 @@ public class EmployeeDao extends JdbcDaoSupport {
 
     public List<String> getUsernames(){
         String sqlGetUsernames = "SELECT employee_username FROM employees";
+        return getJdbcTemplate().queryForList(sqlGetUsernames,new Object[]{}, String.class);
+    }
+
+    public List<String> getEnabledUsernames(){
+        String sqlGetUsernames = "SELECT employee_username FROM employees WHERE enabled=1";
         return getJdbcTemplate().queryForList(sqlGetUsernames,new Object[]{}, String.class);
     }
 }

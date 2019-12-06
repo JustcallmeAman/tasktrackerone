@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ManagerController {
     @RequestMapping(value = "manager", method = RequestMethod.GET)
-    public String manager (Model model){
+    public String manager (){
         return "manager/index";
+    }
+    @RequestMapping(value = "../manager", method = RequestMethod.GET)
+    public String managerFromChild (){
+        return "index";
     }
 }
 

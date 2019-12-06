@@ -6,37 +6,35 @@
 </head>
 <body>
 
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit employee</title>
-</head>
-<body>
-
 <div class="container">
     <div class="card card-container-lg">
         <h1>edit employee</h1>
         <br>
         <form th:action="@{submitEmployeeEdit}" th:object="${employee}" method='POST'>
-            <P> edit for:</P>
-            <p th:text="${employee.getUsername()}"></p>
+            <P style="color:red"> edit for:</P>
+            <p style="color:red" th:text="${employee.getUsername()}"></p>
+            <p style="color:red"> failed</p>
             <div>
                 <label th:for="pwd1">Password:</label>
-                <input th:id="pwd1" th:name="pwd1" type="password"/>
+                <input th:id="pwd1" th:name="pwd1" type="password" required/>
 
                 <label th:for="pwd2">Confirm password:</label>
-                <input th:id="pwd2" th:name="pwd2" type="password"/>
+                <input th:id="pwd2" th:name="pwd2" type="password" required/>
             </div>
-            <select  th:id="enabled"  th:name="enabled" required>
-                <option th:value="active" th:text="active"></option>
-                <option th:value="disable" th:text="disable"></option>
-            </select>
+            <div>
+                <select  th:id="enabled" th:name="enabled">
+                    <option th:value="active" th:text="active" th:id="enabled" th:name="enabled"></option>
+                    <option th:value="disable" th:text="disable" th:id="enabled" th:name="enabled"></option>
+                </select>
+            </div>
             <input type="hidden" th:value="${employee.getId()}" name="id" />
             <button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button>
         </form>
         <a th:href="@{employees}">Cancel</a>
     </div>
 </div>
+<script>
+</script>
 
 </body>
 </html>

@@ -19,7 +19,7 @@ public class TaskController {
     @RequestMapping(value = {"viewtasks", "/", "index"}, method = RequestMethod.GET)
     public String viewTasks(Model model) {//this might be better if we pass hashmap<task, emloyee>
         try{
-            List<Task> taskList= taskDao.getAllTasks();
+            List<Task> taskList= taskDao.getAllEnabledTasks();
             model.addAttribute("taskList", taskList);
         } catch (Exception e){
 
@@ -46,15 +46,26 @@ public class TaskController {
         return "redirect:edittasks";
     }
 
-    @RequestMapping(value = "manager/confirmTaskDeletion", method = RequestMethod.POST) //for sending to deletion Confirmation
-    public String confirmTaskDeletion(Model model, @ModelAttribute(value = "task") Task task) {
+    @RequestMapping(value = "manager/confirmTaskEnableDisable", method = RequestMethod.POST) //for sending to deletion Confirmation
+    public String confirmTaskEnableDisable(Model model, @ModelAttribute(value = "task") Task task) {
         model.addAttribute("task", task);
-        return "manager/ConfirmTaskDeletion"; //html name
+        int status = taskDao.getTaskStatus(task);
+        if (status ==1){
+            return "manager/ConfirmTaskDisable"; //html name
+        } else {
+            return "manager/ConfirmTaskEnable";
+        }
     }
 
-    @RequestMapping(value = "manager/deletetask", method = RequestMethod.POST) //for sending to deletion Confirmation
-    public String deleteTask(@ModelAttribute(value = "newTask") Task task) {
-        taskDao.deleteTask(task);
+    @RequestMapping(value = "manager/disabletask", method = RequestMethod.POST)
+    public String disableTask(@ModelAttribute(value = "newTask") Task task) {
+        taskDao.disableTask(task);
+        return "redirect:edittasks"; //html name
+    }
+
+    @RequestMapping(value = "manager/enabletask", method = RequestMethod.POST)
+    public String enableTask(@ModelAttribute(value = "newTask") Task task) {
+        taskDao.enableTask(task);
         return "redirect:edittasks"; //html name
     }
 

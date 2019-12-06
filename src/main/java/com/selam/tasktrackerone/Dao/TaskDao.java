@@ -50,6 +50,30 @@ public class TaskDao extends JdbcDaoSupport{
         }
     }
 
+    public List<Task> getAllEnabledTasks() {
+        String sql= "SELECT * FROM tasks WHERE enabled =1";
+        try{
+            List<Task> tasks=getJdbcTemplate().query(sql, new TaskMapper());
+            for (Task task : tasks){
+                task.setLastDone(getLastDone(task));
+                task.setNextDeadline(getNextDeadline(task));
+            }
+            return  tasks;
+        } catch (Exception e){
+            return new ArrayList<Task>();
+        }
+    }
+
+    public int getTaskStatus(Task task){
+        String sqlTaskStatus = "SELECT enabled FROM tasks WHERE id=?";
+        try{
+            int status = getJdbcTemplate().queryForObject(sqlTaskStatus,new Object[]{task.getId()}, Integer.class);
+            return status;
+        } catch (Exception e){
+            return -1;
+        }
+    }
+
     public int getTaskType(Task t){
         return getTaskType(t.getId());
     }
@@ -124,21 +148,30 @@ public class TaskDao extends JdbcDaoSupport{
 
     public void editTask(Task task){
         try{
-            String sqlEditTask= "UPDATE tasks SET task_name=? WHERE id=?";
-            getJdbcTemplate().update(sqlEditTask, task.getName(),task.getId());
+            String sqlEditTask= "UPDATE tasks SET task_name=?, task_description=? WHERE id=?";
+            Object[] vals = new Object[]{task.getName(), task.getDescription(), task.getId()};
+            getJdbcTemplate().update(sqlEditTask, vals);
         } catch (Exception e) {
 
         }
     }
 
-    public void deleteTask(Task task){
+    public void disableTask(Task task){
         try{
-            String sqlDeleteTask= "DELETE FROM tasks WHERE id=?";
-            getJdbcTemplate().update(sqlDeleteTask, task.getId());
+            String sqlDisableTask= "UPDATE tasks SET enabled = 0 WHERE id=?";
+            getJdbcTemplate().update(sqlDisableTask, task.getId());
         } catch(Exception e) {
 
         }
+    }
 
+    public void enableTask(Task task){
+        try{
+            String sqlDisableTask= "UPDATE tasks SET enabled = 1 WHERE id=?";
+            getJdbcTemplate().update(sqlDisableTask, task.getId());
+        } catch(Exception e) {
+
+        }
     }
 
     public void addTask (Task task){
