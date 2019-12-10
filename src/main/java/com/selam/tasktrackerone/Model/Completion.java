@@ -10,7 +10,7 @@ public class Completion {
     int taskId;
     LocalDateTime taskDeadline;
 
-    public Completion(int id, LocalDateTime time, String comment, String employeeId, int taskId, LocalDateTime taskDeadline) {
+    public Completion(int id, LocalDateTime time, String comment, String employeeUsername, int taskId, LocalDateTime taskDeadline) {
         this.id = id;
         this.time = time;
         this.comment = comment;

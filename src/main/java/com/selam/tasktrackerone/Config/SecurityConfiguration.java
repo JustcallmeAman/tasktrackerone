@@ -43,7 +43,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
    /*@Bean
-   public PasswordEncoder passwordEncoder() {
+   public static PasswordEncoder passwordEncode() {
        return NoOpPasswordEncoder.getInstance();
    }*/
 

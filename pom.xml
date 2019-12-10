@@ -6,7 +6,7 @@
     <groupId>com.selam</groupId>
     <artifactId>tasktrackerone</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>tasktrackerone</name>
     <description>Task Tracker - for Raceway</description>

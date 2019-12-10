@@ -43,7 +43,8 @@ public class CompletionDao extends JdbcDaoSupport {
     public List<Completion>getAllCompletions(LocalDateTime startTime, LocalDateTime endTime){//gets all completions after time
         endTime= endTime.plusDays(1);
         String sqlGetCompletions = "SELECT * FROM completion WHERE completion_time >= ? AND completion_time<?";
-        return getJdbcTemplate().query(sqlGetCompletions, new Object[]{startTime, endTime}, new CompletionMapper());
+        List<Completion>completions= getJdbcTemplate().query(sqlGetCompletions, new Object[]{startTime, endTime}, new CompletionMapper());
+        return completions;
     }
     public List<Wrapper> getWrappers(LocalDateTime startTime, LocalDateTime endTime){
         List<Wrapper> wrappers = new ArrayList<Wrapper>();

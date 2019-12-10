@@ -71,6 +71,7 @@ public class EmployeeDao extends JdbcDaoSupport {
             getJdbcTemplate().update(sqlGiveNewAuthority,vals);*/
         }
         catch (Exception e){
+            System.out.print("edit employee failed");
         }
 
     }
