@@ -14,6 +14,7 @@ public class Employee {
     String username;
     String encryptedPassword;
     int role;
+    boolean enabled;
     public Employee(){
 
     }
@@ -55,5 +56,13 @@ public class Employee {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

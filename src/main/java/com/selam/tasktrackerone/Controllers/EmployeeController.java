@@ -30,9 +30,11 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "manager/submitEmployeeEdit", method = RequestMethod.POST) //to go from employees to edit employee form
-    public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee, @RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2, @RequestParam("enabled") String enabled,Model model){
+    public String submitEmployeeEdit(@ModelAttribute(value = "employee") Employee employee, @RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2, @RequestParam("enable") String enabled,Model model){
         if (pwd1.equals(pwd2)){
-            employee.setEncryptedPassword(pwd1);
+            if (pwd1!=null && !pwd1.equals("")){
+                employee.setEncryptedPassword(pwd1);
+            }
             employeeDao.EditEmployee(employee.getId(), employee, enabled);
             return "redirect:employees";
         } else {

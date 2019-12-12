@@ -4,28 +4,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Edit Task</title>
+    <style>
+        .halfpage{
+            margin-left: 40%;
+            max-width: 20%;
+            min-width: 20%;
+            align-self: center;
+        }
+    </style>
+    <title> EDIT TASK</title>
 </head>
 <body>
-    <form th:action="@{submittaskedit}" th:object="${newTask}" method='POST'>
-        <div class="form-group">
+<br><br>
+    <h2 th:align="center"> EDIT TASK </h2>
+
+    <form th:action="@{submittaskedit}" th:object="${newTask}" method='POST' class="halfpage">
+        <div>
             <label for="taskName">Task Name </label>
-            <input type="text" id="taskName" th:value="${task.getName()}" name="name"/>
+            <input class="form-control" type="text" id="taskName" th:value="${task.getName()}" name="name"/>
         </div>
-        <div class="form-group">
+        <div>
             <label for="taskDescription">Task Description </label>
-            <input type="text" id="taskDescription" th:value="${task.getDescription()}" name="description"/>
+            <input class="form-control" type="text" id="taskDescription" th:value="${task.getDescription()}" name="description"/>
         </div>
         <input type="hidden" th:value="${task.getId()}" name="id" />
         <div>
             <br>
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a th:href="@{edittasks}" class="btn btn-secondary">Cancel</a>
             <br>
-        </div>
-
-        <div>
-                <a th:href="@{edittasks}">Cancel</a>
-
         </div>
     </form>
 

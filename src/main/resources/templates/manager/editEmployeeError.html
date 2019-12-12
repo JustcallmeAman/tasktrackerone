@@ -4,37 +4,48 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Edit employee</title>
+    <style>
+        .halfpage{
+            margin-left: 40%;
+            max-width: 20%;
+            min-width: 20%;
+            align-self: center;
+        }
+    </style>
+    <title>EDIT EMPLOYEE</title>
 </head>
 <body>
-
-<div class="container">
-    <div class="card card-container-lg">
-        <h1>edit employee</h1>
+    <h2 th:align="center">EDIT EMPLOYEE</h2>
+    <br>
+    <form th:action="@{submitEmployeeEdit}" th:object="${employee}" method='POST' class="halfpage">
+        <P style="color:red"> edit for:</P>
+        <p style="color:red" th:text="${employee.getUsername()}"></p>
+        <p style="color:red"> failed</p>
+        <div th:align="center">
+            <p th:text="${employee.getUsername()}"></p>
+        </div>
+        <div>
+            <label th:for="pwd1">Password:</label>
+            <input class="form-control" th:id="pwd1" th:name="pwd1" type="password"/>
+            <br>
+            <label th:for="pwd2">Confirm password:</label>
+            <input class="form-control" th:id="pwd2" th:name="pwd2" type="password"/>
+        </div>
         <br>
-        <form th:action="@{submitEmployeeEdit}" th:object="${employee}" method='POST'>
-            <P style="color:red"> edit for:</P>
-            <p style="color:red" th:text="${employee.getUsername()}"></p>
-            <p style="color:red"> failed</p>
-            <div>
-                <label th:for="pwd1">Password:</label>
-                <input th:id="pwd1" th:name="pwd1" type="password" required/>
-
-                <label th:for="pwd2">Confirm password:</label>
-                <input th:id="pwd2" th:name="pwd2" type="password" required/>
-            </div>
-            <div>
-                <select  th:id="enabled" th:name="enabled">
-                    <option th:value="active" th:text="active" th:id="enabled" th:name="enabled"></option>
-                    <option th:value="disable" th:text="disable" th:id="enabled" th:name="enabled"></option>
-                </select>
-            </div>
-            <input type="hidden" th:value="${employee.getId()}" name="id" />
-            <button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button>
-        </form>
-        <a th:href="@{employees}">Cancel</a>
-    </div>
-</div>
+        <div>
+            <select  class="form-control" th:id="enable"  th:name="enable" required>
+                <option th:value="active" th:text="active"></option>
+                <option th:value="disable" th:text="disable"></option>
+            </select>
+        </div>
+        <input type="hidden" th:value="${employee.getId()}" name="id" />
+        <input type="hidden" th:value="${employee.isEnabled()}" name="enabled" />
+        <br>
+        <div th:align="center">
+            <button class="btn btn-primary " type="submit">Submit</button>
+            <a th:href="@{employees}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

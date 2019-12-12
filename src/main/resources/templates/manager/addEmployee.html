@@ -4,35 +4,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .halfpage{
+            margin-left: 40%;
+            max-width: 20%;
+            min-width: 20%;
+            align-self: center;
+        }
+    </style>
     <title>ADD A NEW EMPLOYEE</title>
 </head>
 <body>
-<h1>ADD A NEW EMPLOYEE</h1>
-<form th:action="@{addnewemployee}" th:object="${employee}" method='POST'>
-    <div class="form-group">
+<br> <br>
+<h2 th:align="center">ADD A NEW EMPLOYEE</h2>
+<br>
+<form th:action="@{addnewemployee}" th:object="${employee}" method='POST' class="halfpage">
+    <div>
         <label for="username">Employee name </label>
-        <input type="text" id="username" class="form-control" th:field="*{username}" />
+        <input class="form-control" id="username" th:field="*{username}" />
     </div>
-    
-    <div class="form-group">
-        <select th:field="*{role}">
+    <br>
+    <div>
+        <select class="form-control" th:field="*{role}">
             <option th:value="1"> Manager</option>
             <option th:value="2"> Customer Service</option>
         </select>
     </div>
-    <div class="form-group">
-        <label for="pwd">password </label>
-        <input type="password" id="pwd" class="form-control" th:field="*{encryptedPassword}" />
-    </div>
+    <br>
     <div>
+        <label for="pwd">password </label>
+        <input class="form-control" type="password" id="pwd" th:field="*{encryptedPassword}" />
+    </div>
+    <div th:align="center">
         <br>
-        <center><button class="btn btn-lg btn-primary btn-signin" type="submit">submit</button></center>
+        <button class="btn btn-primary" type="submit">submit</button></center>
+        <a th:href="@{employees}" class="btn btn-secondary">Cancel</a>
         <br>
     </div>
     <div >
-        <center>
-            <a th:href="@{employees}">Cancel</a>
-        </center>
+
 
     </div>
 </form>

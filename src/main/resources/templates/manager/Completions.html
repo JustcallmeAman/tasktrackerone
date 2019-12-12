@@ -4,28 +4,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Completions</title>
+    <title>COMPLETIONS</title>
 </head>
 <body>
 <div>
+    <a href="../manager" class="btn btn-outline-dark" style="margin:2%">back to dashboard</a>
     <h2 align="center">COMPLETIONS</h2>
     <br>
-    <table>
-        <tr>
-            <th>Task</th>
-            <th>Last done by</th>
-            <th>Last completion time </th>
-            <th></th>
-        </tr>
-        <th:block th:each="wrapper : ${wrappers}">
-            <tr>
-                <td th:text="${wrapper.getTask().getName()}"></td>
-                <td th:text="${wrapper.getEmployee().getUsername()}"></td>
-                <td th:text="${wrapper.getCompletion().getTime()}"></td>
+    <div class="d-flex justify-content-center" style="padding:2%">
+        <table class="table table-striped">
+            <tr th:align="center" class="thead-light">
+                <th>Task</th>
+                <th>Done by</th>
+                <th>Completion time </th>
+                <th></th>
             </tr>
-        </th:block>
-    </table>
-    <a href="../manager">back to dashboard</a>
+            <th:block th:each="wrapper : ${wrappers}">
+                <tr th:align="center">
+                    <td th:text="${wrapper.getTask().getName()}"></td>
+                    <td th:text="${wrapper.getEmployee().getUsername()}"></td>
+                    <td th:text="${#temporals.format(wrapper.getCompletion().getTime(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

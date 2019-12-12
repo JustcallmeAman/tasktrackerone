@@ -3,33 +3,41 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<title>MANAGER</title>
+	<link rel="stylesheet" href="../main.css">
+	<style>
+		.halfpage{
+			margin-left: 20%;
+			max-width: 50%;
+			min-width: 50%;
+			align-self: center;
+		}
+	</style>
+	<title>MANAGER DASHBOARD</title>
 	</head>
-
 <body>
-
-<div>
-	<a href="/logout">Logout</a>
-	<form th:action="@{viewtasks}" method="get">
-		<button type="submit">View tasks</button>
-	</form>
-
-	<form th:action="@{manager/edittasks}" method="get">
-		<button type="submit">Edit tasks</button>
-	</form>
-
-	<form th:action="@{manager/employees}" method="get">
-		<button type="submit">Edit employees</button>
-	</form>
-
+<a href="/logout" class="btn btn-outline-dark" style="margin:2%">Logout</a>
+<div class="halfpage" th:align="center">
+	<h2 th:align="center"> MANAGER DASHBOARD</h2>
+	<br> <br>
 	<form th:action="@{manager/completions}" method="POST">
 		<label th:for="startDate">FROM:</label>
 		<input th:id="startDate" id="startDate" th:name="startDate" type="date"/>
-
 		<label th:for="endDate">TO:</label>
 		<input th:id="endDate" th:name="endDate" type="date" min='2000-01-01'/>
+		<br> <br>
+		<button type="submit" class="btn btn-secondary btn-block">View completions</button>
+	</form>
+	<br>
+	<form th:action="@{viewtasks}" method="get">
+		<button type="submit" class="btn btn-secondary btn-block">View tasks</button>
+	</form>
 
-		<button type="submit">View completions</button>
+	<form th:action="@{manager/edittasks}" method="get">
+		<button type="submit" class="btn btn-secondary btn-block">Edit tasks</button>
+	</form>
+
+	<form th:action="@{manager/employees}" method="get">
+		<button type="submit" class="btn btn-secondary btn-block">Edit employees</button>
 	</form>
 
 </div>

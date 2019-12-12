@@ -4,49 +4,57 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .halfpage{
+            margin-left: 40%;
+            max-width: 20%;
+            min-width: 20%;
+            align-self: center;
+        }
+    </style>
     <title>ADD A NEW TASK</title>
 </head>
 <body>
-    <h1>ADD A NEW TASK</h1>
-    <form th:action="@{confirmnewtask}" th:object="${task}" method='POST'>
-        <div class="form-group">
-            <label for="name">Task name </label>
-            <input type="text" id="name" class="form-control" th:field="*{name}" />
-        </div>
+<br><br>
+    <div class="formatted_form">
+        <h2 th:align="center">ADD A NEW TASK</h2>
+        <form th:action="@{confirmnewtask}" th:object="${task}" method='POST' class="halfpage">
+            <div class="form-group">
+                <label for="name">Task name </label>
+                <input class="form-control" type="text" id="name" th:field="*{name}" />
+            </div>
 
-        <div class="form-group">
-            <label for="description">Task description </label>
-            <input type="text" id="description" class="form-control" th:field="*{description}" />
-        </div>
-        <div class="form-group">
-            <label>Task type </label>
-            <input type="radio" class="form-control" th:value="1" th:field="*{type}" /><p>periodical</p>
-            <input type="radio" class="form-control" th:value="2" th:field="*{type}" /><p>frequent</p>
-        </div>
+            <div class="form-group">
+                <label for="description">Task description </label>
+                <input class="form-control" type="text" id="description" th:field="*{description}" />
+            </div>
+            <div class="form-group">
+                <input id="periodical" class="" type="radio" th:value="1" th:field="*{type}" />
+                <label for="periodical">periodical </label>
+                <br>
+                <input id="frequent" class="" type="radio" th:value="2" th:field="*{type}" />
+                <label for="frequent">frequent </label>
+            </div>
 
-        <div class="form-group">
-            <select th:field="*{sequence}">
-                <option th:each="i : ${#numbers.sequence(1, 23)}" th:value="${i}" th:text="${i}">
-                </option>
-                <option th:value="24"> once a day</option>
-                <option th:value="48"> every other day</option>
-                <option th:value="168"> once a week</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>sequence (in hours)</label>
+                <select class="form-control" th:field="*{sequence}">
+                    <option th:each="i : ${#numbers.sequence(1, 23)}" th:value="${i}" th:text="${i}">
+                    </option>
+                    <option th:value="24"> once a day</option>
+                    <option th:value="48"> every other day</option>
+                    <option th:value="168"> once a week</option>
+                </select>
+            </div>
 
-        <div>
-            <br>
-            <center><button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button></center>
-            <br>
-        </div>
-        <div >
-            <center>
-                <a th:href="@{edittasks}">Cancel</a>
-            </center>
-
-        </div>
-    </form>
-
+            <div th:align="center">
+                <br>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <a th:href="@{edittasks}" class="btn btn-secondary" style="margin:2%">Cancel</a>
+                <br>
+            </div>
+        </form>
+    </div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>

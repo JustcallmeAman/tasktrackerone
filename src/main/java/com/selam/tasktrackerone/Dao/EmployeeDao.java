@@ -47,16 +47,25 @@ public class EmployeeDao extends JdbcDaoSupport {
     }
 
     public void EditEmployee(Long id, Employee updatedEmployee, String enabled){
-
         try{
-            String sqlEditEmployee= "UPDATE employees SET employee_password=?, enabled=? WHERE id=?";
+            String pwd;
             int enable;
+            String sqlEditEmployee;
+            Object[] vals;
             if(enabled.equals("active")){
                 enable =1;
             } else {
                 enable =0;
             }
-            Object[] vals = new Object[]{ updatedEmployee.getEncryptedPassword(), enable, id};
+
+            if (updatedEmployee.getEncryptedPassword()==(null)){
+                vals = new Object[]{enable, id};
+                sqlEditEmployee= "UPDATE employees SET enabled=? WHERE id=?";
+
+            } else {
+                vals = new Object[]{ updatedEmployee.getEncryptedPassword(), enable, id};
+                sqlEditEmployee= "UPDATE employees SET employee_password=?, enabled=? WHERE id=?";
+            }
             getJdbcTemplate().update(sqlEditEmployee, vals);
 
 

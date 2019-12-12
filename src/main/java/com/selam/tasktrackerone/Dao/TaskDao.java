@@ -192,14 +192,6 @@ public class TaskDao extends JdbcDaoSupport{
         }
     }
 
-    /*public Long getLastCompletor(int taskId){
-        try{
-            List<Completion> completions= getCompletions(taskId);
-            return completions.get(completions.size()-1).getEmployeeUsername();
-        } catch (Exception e){
-            return null;
-        }
 
-    }*/
 
 }

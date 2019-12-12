@@ -4,15 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Tasks</title>
+    <title>TASKS</title>
 </head>
 <body>
     <a href="manager" class="btn btn-outline-dark" style="margin:2%">manager site</a>
+    <a href="/logout" class="btn btn-outline-dark" style="margin:2%">Logout</a>
     <h2 align="center">TASKS</h2>
     <div class="d-flex justify-content-center" style="padding:2%">
         <br>
         <table class="table table-striped">
-            <tr class="thead-light">
+            <tr th:align="center" class="thead-light">
                 <th>NAME</th>
                 <th>LAST DONE</th>
                 <th>NEXT DEADLINE</th>
@@ -20,10 +21,10 @@
                 <th></th>
             </tr>
             <th:block th:each="task : ${taskList}">
-                <tr>
+                <tr th:align="center">
                     <td th:text="${task.getName()}"></td>
-                    <td th:text="${task.getLastDone()}"></td>
-                    <td th:text="${task.getNextDeadline()}"></td>
+                    <td th:text="${#temporals.format(task.getLastDone(), 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(task.getNextDeadline(), 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td>
                         <form th:action="@{addcompletion}" th:object="${task}" method="post">
                             <input type="hidden" th:value="*{id}" name="id" />

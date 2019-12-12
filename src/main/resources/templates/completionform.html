@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Completion form</title>
+    <title>SUBMIT COMPLETION</title>
 
 </head>
 <body>
@@ -13,7 +13,7 @@
 
 <div class="container">
     <div class="card card-container-lg">
-        <h2 align="center">Create Event</h2>
+        <h2 align="center">SUBMIT COMPLETION</h2>
         <br>
         <form th:action="@{submitcompletion}" th:object="${completion}" method='POST'>
 
@@ -34,16 +34,15 @@
 
             <div>
                 <br>
-                <center><button class="btn btn-lg btn-primary btn-signin" type="submit">Submit</button></center>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <a class="btn btn-secondary" th:href="@{viewtasks}">Cancel</a>
                 <br>
             </div>
             <div >
-                <center>
-                    <a th:href="@{viewtasks}">Cancel</a>
-                </center>
+
 
             </div>
-        </form> <!-- /form -->
+        </form>
 
     </div>
 </div>
